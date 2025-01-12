@@ -1,0 +1,24 @@
+package repository
+
+import (
+	"icu/internal/model"
+
+	"gorm.io/gorm"
+)
+
+type UserRepository struct {
+	db *gorm.DB
+}
+
+func NewUserRepository() *UserRepository {
+	return &UserRepository{}
+}
+
+// GetUserByID 根据 ID 获取用户信息
+func (r *UserRepository) GetUserByID(id string) (*model.User, error) {
+	var user model.User
+	if err := r.db.First(&user, id).Error; err != nil {
+		return nil, err
+	}
+	return &user, nil
+}
