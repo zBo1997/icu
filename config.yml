@@ -1,0 +1,6 @@
+database:
+  username: root
+  password: Vvlife@2019
+  host: 172.16.6.69
+  port: 3306
+  dbname: icu
