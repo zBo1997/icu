@@ -9,8 +9,6 @@ import (
 // UserService 用于处理与用户相关的业务逻辑
 type UserController struct {
 	service *service.UserService
-	// 获取用户定义
-	GetUser func(c *gin.Context) 
 }
 
 func NewUserController() *UserController{
@@ -20,7 +18,7 @@ func NewUserController() *UserController{
 }
 
 // GetUserHandler 获取用户信息的处理函数
-func GetUser(c *gin.Context) {
+func (a *UserController) GetUser(c *gin.Context) {
 	id := c.Param("id")
 	userService := service.NewUserService()
 	user, err := userService.GetUser(id)
