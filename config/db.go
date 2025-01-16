@@ -85,6 +85,7 @@ func CloseDB() {
 	if err != nil {
 		log.Fatalf("关闭数据库连接失败: %v", err)
 	}
+	log.Println("数据库连接已关闭")
 }
 
 

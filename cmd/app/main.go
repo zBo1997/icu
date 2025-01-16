@@ -1,8 +1,13 @@
 package main
 
 import (
+	"context"
 	"icu/config"
 	"icu/internal/route"
+	"os"
+	"os/signal"
+	"syscall"
+	"time"
 
 	"log"
 	"net/http"
@@ -15,11 +20,17 @@ func main() {
 	config.InitConfig()
 	// 初始化数据库
 	config.InitDB()
-	// 程序退出时关闭数据库连接
-	defer config.CloseDB()
 
 
 	r := gin.Default()
+
+
+	// 创建一个 http.Server
+	srv := &http.Server{
+		Addr:    ":8080",
+		Handler: r,
+	}
+
 
 	// 自定义中间件处理错误并记录日志
 	r.Use(func(c *gin.Context) {
@@ -40,6 +51,31 @@ func main() {
 
 	route.SetupRoutes(r)
 
-	// 启动服务
-	r.Run(":8080")
+    go func() {
+        // service connections
+        if err := srv.ListenAndServe(); err != nil && err != http.ErrServerClosed {
+            log.Fatalf("listen: %s\n", err)
+        }
+    }()
+ 
+    // Wait for interrupt signal to gracefully shutdown the server with
+    // a timeout of 5 seconds.
+    quit := make(chan os.Signal, 1)
+    // kill (no param) default send syscanll.SIGTERM
+    // kill -2 is syscall.SIGINT
+    // kill -9 is syscall. SIGKILL but can"t be catch, so don't need add it
+    signal.Notify(quit, syscall.SIGINT, syscall.SIGTERM)
+    <-quit
+    log.Println("Shutdown Server ...")
+ 
+    ctx, cancel := context.WithTimeout(context.Background(), 5*time.Second)
+    defer cancel()
+    if err := srv.Shutdown(ctx); err != nil {
+        log.Fatal("Server Shutdown:", err)
+    }
+	// catching ctx.Done(). timeout of 5 seconds.
+	<-ctx.Done()
+	log.Println("Closing database connection...")
+	config.CloseDB()
+    log.Println("Server exiting")
 }
