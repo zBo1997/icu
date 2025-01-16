@@ -1,21 +1,35 @@
 package config
 
 import (
-	"database/sql"
 	"fmt"
 	"log"
+	"os"
+	"path/filepath"
 
-	_ "github.com/go-sql-driver/mysql"
 	"github.com/spf13/viper"
+	"gorm.io/driver/mysql"
+	"gorm.io/gorm"
 )
 
-var DB *sql.DB
+var DB *gorm.DB
+
+func GetDB() *gorm.DB {
+	return DB
+}
 
 // InitConfig 初始化配置文件
 func InitConfig() {
+	// 获取当前工作目录
+	dir, pathErr := os.Getwd()
+	if pathErr != nil {
+		fmt.Println("Error:", pathErr)
+		return
+	}
+	rootPath, _ := findProjectRoot(dir)
+	// 获取当前工作目录
 	viper.SetConfigName("config")    // 配置文件名（不带扩展名）
-	viper.AddConfigPath(".")         // 配置文件所在的路径
-	viper.SetConfigType("yaml")      // 配置文件类型为 YAML
+	viper.AddConfigPath(rootPath)         // 配置文件所在的路径
+	viper.SetConfigType("yml")      // 配置文件类型为 YAML
 
 	// 读取配置文件
 	err := viper.ReadInConfig()
@@ -43,24 +57,52 @@ func InitDB() {
 
 	// 初始化数据库连接
 	var err error
-	DB, err = sql.Open("mysql", dsn)
+	DB, err = gorm.Open(mysql.Open(dsn), &gorm.Config{})
 	if err != nil {
 		log.Fatalf("数据库连接失败: %v", err)
 	}
 
 	// 检查数据库连接
-	err = DB.Ping()
+	sqlDB, err := DB.DB()
 	if err != nil {
-		log.Fatalf("数据库连接失败: %v", err)
+		log.Fatalf("获取数据库实例失败: %v", err)
 	}
+
+	// 设置最大连接池数
+	sqlDB.SetMaxOpenConns(100)
+	sqlDB.SetMaxIdleConns(10)
 
 	log.Print("成功连接到数据库")
 }
 
 // CloseDB 关闭数据库连接
 func CloseDB() {
-	err := DB.Close()
+	sqlDB, err := DB.DB()
+	if err != nil {
+		log.Fatalf("获取数据库实例失败: %v", err)
+	}
+	err = sqlDB.Close()
 	if err != nil {
 		log.Fatalf("关闭数据库连接失败: %v", err)
+	}
+}
+
+
+// 查找项目根目录
+func findProjectRoot(startDir string) (string, error) {
+	for {
+		// 查找 go.mod 文件
+		if _, err := os.Stat(filepath.Join(startDir, "go.mod")); err == nil {
+			return startDir, nil
+		}
+
+		// 如果已经到达根目录，就退出
+		parentDir := filepath.Dir(startDir)
+		if parentDir == startDir {
+			return "", fmt.Errorf("project root not found")
+		}
+
+		// 继续向上查找
+		startDir = parentDir
 	}
 }

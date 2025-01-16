@@ -1,6 +1,7 @@
 package main
 
 import (
+	"icu/config"
 	"icu/internal/route"
 
 	"log"
@@ -10,7 +11,14 @@ import (
 )
 
 func main() {
-	// 使用 gin.Default()，启用内置的 Logger 和 Recovery 中间件
+	// 初始化配置文件
+	config.InitConfig()
+	// 初始化数据库
+	config.InitDB()
+	// 程序退出时关闭数据库连接
+	defer config.CloseDB()
+
+
 	r := gin.Default()
 
 	// 自定义中间件处理错误并记录日志

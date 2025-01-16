@@ -1,6 +1,7 @@
 package repository
 
 import (
+	"icu/config"
 	"icu/internal/model"
 
 	"gorm.io/gorm"
@@ -11,7 +12,7 @@ type UserRepository struct {
 }
 
 func NewUserRepository() *UserRepository {
-	return &UserRepository{}
+	return &UserRepository{db: config.GetDB()}
 }
 
 // GetUserByID 根据 ID 获取用户信息
