@@ -28,7 +28,7 @@ func InitConfig() {
 	rootPath, _ := findProjectRoot(dir)
 	// 获取当前工作目录
 	viper.SetConfigName("config")    // 配置文件名（不带扩展名）
-	viper.AddConfigPath(rootPath)         // 配置文件所在的路径
+	viper.AddConfigPath(rootPath)    // 配置文件所在的路径
 	viper.SetConfigType("yml")      // 配置文件类型为 YAML
 
 	// 读取配置文件
