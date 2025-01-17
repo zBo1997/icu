@@ -21,12 +21,9 @@ func NewAuthController() *AuthController{
 	}
 }
 
-// 用于保存用户信息的内存数据库（示例）
-var users = map[string]string{}
-
 // 登录处理函数
 func (a *AuthController) LoginHandler(c *gin.Context) {
-	token, err := a.userService.LoginHandler(c)
+	token, err := a.userService.Login(c)
 	if err != nil {
 		c.JSON(http.StatusInternalServerError, gin.H{"error": "Failed to login user"})
 		return
@@ -37,7 +34,7 @@ func (a *AuthController) LoginHandler(c *gin.Context) {
 
 // 注册处理函数
 func  (a *AuthController) RegisterHandler(c *gin.Context) {
-	user, err := a.userService.RegisterHandler(c)
+	user, err := a.userService.Register(c)
 	if err != nil {
 		c.JSON(http.StatusInternalServerError, gin.H{"error": "Failed to register user"})
 		return

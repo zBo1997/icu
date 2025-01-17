@@ -34,7 +34,7 @@ func (s *UserService) GetUser(id string) (*model.User, error) {
 }
 
 // 登录处理函数
-func (s *UserService) LoginHandler(c *gin.Context)  (string, error) {
+func (s *UserService) Login(c *gin.Context)  (string, error) {
 	var user model.User
 	if err := c.ShouldBindJSON(&user); err != nil {
 		c.JSON(http.StatusBadRequest, gin.H{"error": "Invalid request"})
@@ -66,7 +66,7 @@ func (s *UserService) LoginHandler(c *gin.Context)  (string, error) {
 
 
 // 注册处理函数
-func  (s *UserService) RegisterHandler(c *gin.Context) (*model.User, error) {
+func  (s *UserService) Register(c *gin.Context) (*model.User, error) {
 	var user model.User
 	if err := c.ShouldBindJSON(&user); err != nil {
 		c.JSON(http.StatusBadRequest, gin.H{"error": "Invalid request"})
@@ -84,7 +84,7 @@ func  (s *UserService) RegisterHandler(c *gin.Context) (*model.User, error) {
 		c.JSON(http.StatusBadRequest, gin.H{"error": "Username is required"})
 		return &user, nil
 	}
-	return s.authRepo.RegisterUser(user.Username,user.Password)
+	return s.authRepo.SaveUser(user.Username,user.Password)
 	
 }
 

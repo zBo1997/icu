@@ -17,7 +17,7 @@ func NewAuthRepository() *AuthRepository {
 }
 
 // 注册
-func  (a *AuthRepository) RegisterUser(userName string,password string)(*model.User, error) {
+func  (a *AuthRepository) SaveUser(userName string,password string)(*model.User, error) {
 	var user model.User
 	// 哈希密码
 	hashedPassword, err := bcrypt.GenerateFromPassword([]byte(password), bcrypt.DefaultCost)
