@@ -24,9 +24,6 @@ func  (a *AuthRepository) SaveUser(userName string,password string,name string,e
 	if err != nil {
 		return nil, err
 	}
-	if err != nil {
-		return nil, err
-	}
 	// 数据库保存用户信息
 	user.Password = string(hashedPassword)
 	user.Username = userName
