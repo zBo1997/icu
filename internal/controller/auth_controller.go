@@ -40,7 +40,7 @@ func  (a *AuthController) RegisterHandler(c *gin.Context) {
 		return
 		
 	}
-	c.JSON(200, user)
+	c.JSON(http.StatusOK, user)
 }
 
 // JWT 验证中间件

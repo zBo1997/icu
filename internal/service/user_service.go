@@ -42,7 +42,7 @@ func (s *UserService) Login(c *gin.Context)  (string, error) {
 	}
 
 	// 检查用户是否存在
-	if _, err := s.userRepo.GetUserByID(user.Username); err != nil {
+	if _, err := s.userRepo.GetUserByName(user.Username); err != nil {
 		c.JSON(http.StatusUnauthorized, gin.H{"error": "User not found"})
 		return "", nil
 	}
@@ -72,6 +72,12 @@ func  (s *UserService) Register(c *gin.Context) (*model.User, error) {
 		c.JSON(http.StatusBadRequest, gin.H{"error": "Invalid request"})
 		return &user, nil
 	}
+	// 检查用户是否存在
+	if user, err := s.userRepo.GetUserByName(user.Username); 
+	err != nil {
+		c.JSON(http.StatusOK, &user)
+		return user, nil
+	}
 
 	// 检查密码是否为空
 	if user.Password == "" {
@@ -84,7 +90,7 @@ func  (s *UserService) Register(c *gin.Context) (*model.User, error) {
 		c.JSON(http.StatusBadRequest, gin.H{"error": "Username is required"})
 		return &user, nil
 	}
-	return s.authRepo.SaveUser(user.Username,user.Password)
+	return s.authRepo.SaveUser(user.Username,user.Password,user.Name,user.Email)
 	
 }
 

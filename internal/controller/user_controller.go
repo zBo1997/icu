@@ -1,6 +1,8 @@
 package controller
 
 import (
+	"net/http"
+
 	"icu/internal/service"
 
 	"github.com/gin-gonic/gin"
@@ -23,10 +25,10 @@ func (a *UserController) GetUser(c *gin.Context) {
 	userService := service.NewUserService()
 	user, err := userService.GetUser(id)
 	if err != nil {
-		c.JSON(404, gin.H{
+		c.JSON(http.StatusOK, gin.H{
 			"message": "User not found",
 		})
 		return
 	}
-	c.JSON(200, user)
+	c.JSON(http.StatusOK, user)
 }

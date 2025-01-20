@@ -23,3 +23,13 @@ func (r *UserRepository) GetUserByID(id string) (*model.User, error) {
 	}
 	return &user, nil
 }
+
+// GetUserByID 根据 ID 获取用户信息
+func (r *UserRepository) GetUserByName(name string) (*model.User, error) {
+	var user model.User
+	if err := r.db.Where("name = ?",name).First(&user).Error; err != nil {
+		return nil, err
+	}
+	return &user, nil
+}
+

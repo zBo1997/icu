@@ -17,19 +17,26 @@ func NewAuthRepository() *AuthRepository {
 }
 
 // 注册
-func  (a *AuthRepository) SaveUser(userName string,password string)(*model.User, error) {
+func  (a *AuthRepository) SaveUser(userName string,password string,name string,email string)(*model.User, error) {
 	var user model.User
 	// 哈希密码
 	hashedPassword, err := bcrypt.GenerateFromPassword([]byte(password), bcrypt.DefaultCost)
 	if err != nil {
 		return nil, err
 	}
-	// 数据库保存用户信息
-	user.Password = string(hashedPassword)
 	if err != nil {
 		return nil, err
 	}
-
+	// 数据库保存用户信息
+	user.Password = string(hashedPassword)
+	user.Username = userName
+	user.Name = name
+	user.Email = email
+	result := a.db.Create(&user)
+	// 检查是否插入成功
+	if result.Error != nil {
+		return nil, result.Error
+	}
 	// 返回成功信息
 	return  &user, nil
 
