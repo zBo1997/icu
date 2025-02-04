@@ -36,7 +36,7 @@ func (a *AuthController) LoginHandler(c *gin.Context) {
 func  (a *AuthController) RegisterHandler(c *gin.Context) {
 	user, err := a.userService.Register(c)
 	if err != nil {
-		c.JSON(http.StatusInternalServerError, gin.H{"error": "Failed to register user"})
+		c.JSON(http.StatusInternalServerError, gin.H{"error": err})
 		return
 		
 	}

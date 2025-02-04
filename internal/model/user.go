@@ -7,4 +7,5 @@ type User struct {
 	Email string `json:"email"`
 	Password string `json:"password"`
 	Username string `json:"username"`
+	CreateTime int64 `json:"create_time" gorm:"-"`
 }

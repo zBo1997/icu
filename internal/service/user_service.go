@@ -1,6 +1,7 @@
 package service
 
 import (
+	"errors"
 	"icu/config"
 	"icu/internal/model"
 	"icu/internal/repository"
@@ -42,7 +43,8 @@ func (s *UserService) Login(c *gin.Context)  (string, error) {
 	}
 
 	// 检查用户是否存在
-	if _, err := s.userRepo.GetUserByName(user.Username); err != nil {
+	if user, _ := s.userRepo.UserExistByName(user.Username);
+	user == nil {
 		c.JSON(http.StatusUnauthorized, gin.H{"error": "User not found"})
 		return "", nil
 	}
@@ -70,25 +72,22 @@ func  (s *UserService) Register(c *gin.Context) (*model.User, error) {
 	var user model.User
 	if err := c.ShouldBindJSON(&user); err != nil {
 		c.JSON(http.StatusBadRequest, gin.H{"error": "Invalid request"})
-		return &user, nil
+		return &user, errors.New("invalid request")
 	}
 	// 检查用户是否存在
-	if user, err := s.userRepo.GetUserByName(user.Username); 
-	err != nil {
-		c.JSON(http.StatusOK, &user)
-		return user, nil
+	if user, _ := s.userRepo.UserExistByName(user.Username); user != nil {
+		return user, errors.New("user already exists")
 	}
 
 	// 检查密码是否为空
 	if user.Password == "" {
 		c.JSON(http.StatusBadRequest, gin.H{"error": "Password is required"})
-		return &user, nil
+		return &user, errors.New("password is required")
 	}
 
 	// 检查密码是否为空
 	if user.Username == "" {
-		c.JSON(http.StatusBadRequest, gin.H{"error": "Username is required"})
-		return &user, nil
+		return &user, errors.New("username is required")
 	}
 	return s.authRepo.SaveUser(user.Username,user.Password,user.Name,user.Email)
 	
