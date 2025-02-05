@@ -27,7 +27,10 @@ func (r *UserRepository) GetUserByID(id string) (*model.User, error) {
 // UserExistByName 	根据用户名判断用户是否存在 如果不存在返回记录不存在错误
 func (r *UserRepository) UserExistByName(name string) (*model.User, error) {
 	var user model.User
-	r.db.Where("name = ?",name).First(&user)
+	//按照名字寻找用户，如果没有则返回一个空的user
+	if err := r.db.Where("username = ?", name).First(&user).Error; err != nil {
+		return nil, err
+	}
 	return &user, nil
 }
 

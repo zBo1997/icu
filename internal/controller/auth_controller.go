@@ -23,24 +23,24 @@ func NewAuthController() *AuthController{
 
 // 登录处理函数
 func (a *AuthController) LoginHandler(c *gin.Context) {
-	token, err := a.userService.Login(c)
+	userInfo, err := a.userService.Login(c)
 	if err != nil {
 		c.JSON(http.StatusInternalServerError, gin.H{"error": "Failed to login user"})
 		return
 	}
 	// 返回 JWT
-	c.JSON(http.StatusOK, gin.H{"token": token})
+	c.JSON(http.StatusOK, gin.H{"data": userInfo})
 }
 
 // 注册处理函数
 func  (a *AuthController) RegisterHandler(c *gin.Context) {
 	user, err := a.userService.Register(c)
 	if err != nil {
-		c.JSON(http.StatusInternalServerError, gin.H{"error": err})
+		c.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
 		return
 		
 	}
-	c.JSON(http.StatusOK, user)
+	c.JSON(http.StatusOK, gin.H{"data": user})
 }
 
 // JWT 验证中间件
