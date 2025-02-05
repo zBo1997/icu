@@ -23,6 +23,8 @@ func main() {
 
 
 	r := gin.Default()
+	//限制文件上传的大小
+	r.MaxMultipartMemory = 8 << 20 // 8 MB
 
 
 	// 创建一个 http.Server
