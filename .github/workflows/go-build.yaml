@@ -37,7 +37,7 @@ jobs:
 
     - name: Build Go project
       run: |
-        go build -o icu ./cmd/icu
+        go build -o icu ./cmd/app
 
     - name: Upload Build Artifacts
       uses: actions/upload-artifact@v4
