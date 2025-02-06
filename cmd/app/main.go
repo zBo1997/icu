@@ -16,11 +16,19 @@ import (
 )
 
 func main() {
+	// 创建日志文件
+	logFile, err := os.Create("gin.log")
+	if err != nil {
+        log.Fatalf("无法创建日志文件: %v", err)
+    }
+    defer logFile.Close()
 	// 初始化配置文件
 	config.InitConfig()
 	// 初始化数据库
 	config.InitDB()
 
+	// 将 Gin 的日志输出到文件
+	gin.DefaultWriter = logFile
 
 	r := gin.Default()
 	//限制文件上传的大小
