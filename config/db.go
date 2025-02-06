@@ -1,15 +1,19 @@
 package config
 
 import (
+	"bytes"
+	"embed"
+	_ "embed"
 	"fmt"
 	"log"
-	"os"
-	"path/filepath"
 
 	"github.com/spf13/viper"
 	"gorm.io/driver/mysql"
 	"gorm.io/gorm"
 )
+
+//go:embed config.yml
+var configFile embed.FS
 
 var DB *gorm.DB
 
@@ -19,23 +23,18 @@ func GetDB() *gorm.DB {
 
 // InitConfig 初始化配置文件
 func InitConfig() {
-	// 获取当前工作目录
-	dir, pathErr := os.Getwd()
-	if pathErr != nil {
-		fmt.Println("Error:", pathErr)
-		return
-	}
-	rootPath, _ := findProjectRoot(dir)
-	// 获取当前工作目录
-	viper.SetConfigName("config")    // 配置文件名（不带扩展名）
-	viper.AddConfigPath(rootPath)    // 配置文件所在的路径
-	viper.SetConfigType("yml")      // 配置文件类型为 YAML
+    // 从嵌入的文件系统中读取 config.yml 文件
+    fileContent, err := configFile.ReadFile("config.yml")
+    if err != nil {
+        log.Fatalf("无法读取嵌入的配置文件: %v", err)
+    }
 
-	// 读取配置文件
-	err := viper.ReadInConfig()
-	if err != nil {
-		log.Fatalf("读取配置文件失败: %v", err)
-	}
+    // 使用 viper 加载配置
+    viper.SetConfigType("yml")
+    err = viper.ReadConfig(bytes.NewReader(fileContent))
+    if err != nil {
+        log.Fatalf("读取配置文件失败: %v", err)
+    }
 }
 
 // InitDB 初始化数据库连接
@@ -86,24 +85,4 @@ func CloseDB() {
 		log.Fatalf("关闭数据库连接失败: %v", err)
 	}
 	log.Println("数据库连接已关闭")
-}
-
-
-// 查找项目根目录
-func findProjectRoot(startDir string) (string, error) {
-	for {
-		// 查找 go.mod 文件
-		if _, err := os.Stat(filepath.Join(startDir, "go.mod")); err == nil {
-			return startDir, nil
-		}
-
-		// 如果已经到达根目录，就退出
-		parentDir := filepath.Dir(startDir)
-		if parentDir == startDir {
-			return "", fmt.Errorf("project root not found")
-		}
-
-		// 继续向上查找
-		startDir = parentDir
-	}
 }
