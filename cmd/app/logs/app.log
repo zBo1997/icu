@@ -1,0 +1,33 @@
+[GIN-debug] [WARNING] Running in "debug" mode. Switch to "release" mode in production.
+ - using env:	export GIN_MODE=release
+ - using code:	gin.SetMode(gin.ReleaseMode)
+
+[GIN-debug] GET    /api/ping                 --> icu/internal/route.PingHandler (4 handlers)
+[GIN-debug] POST   /api/upload               --> icu/internal/controller.(*FileController).UpLoadFile-fm (5 handlers)
+[GIN-debug] GET    /api/file/:filename       --> icu/internal/controller.(*FileController).GetFile-fm (5 handlers)
+[GIN-debug] GET    /api/user/:id             --> icu/internal/controller.(*UserController).GetUser-fm (5 handlers)
+[GIN-debug] POST   /api/register             --> icu/internal/controller.(*AuthController).RegisterHandler-fm (4 handlers)
+[GIN-debug] POST   /api/login                --> icu/internal/controller.(*AuthController).LoginHandler-fm (4 handlers)
+[GIN] 2025/02/06 - 17:50:59 | 401 |      1.0534ms |             ::1 | GET      "/api/file/1738746689188796500895.png"
+
+2025/02/06 17:51:07 D:/GolangProject/icu/internal/repository/user_repository.go:31
+[95.256ms] [rows:1] SELECT * FROM `users` WHERE username = 'zhubo1997' ORDER BY `users`.`id` LIMIT 1
+[GIN] 2025/02/06 - 17:51:07 | 200 |    242.8139ms |             ::1 | POST     "/api/login"
+[GIN] 2025/02/06 - 17:51:10 | 401 |       530.9µs |             ::1 | GET      "/api/file/1738746689188796500895.png"
+[GIN] 2025/02/06 - 17:51:24 | 200 |    219.3996ms |             ::1 | GET      "/api/file/1738746689188796500895.png"
+[GIN-debug] [WARNING] Running in "debug" mode. Switch to "release" mode in production.
+ - using env:	export GIN_MODE=release
+ - using code:	gin.SetMode(gin.ReleaseMode)
+
+[GIN-debug] GET    /api/ping                 --> icu/internal/route.PingHandler (4 handlers)
+[GIN-debug] POST   /api/upload               --> icu/internal/controller.(*FileController).UpLoadFile-fm (5 handlers)
+[GIN-debug] GET    /api/file/:filename       --> icu/internal/controller.(*FileController).GetFile-fm (5 handlers)
+[GIN-debug] GET    /api/user/:id             --> icu/internal/controller.(*UserController).GetUser-fm (5 handlers)
+[GIN-debug] POST   /api/register             --> icu/internal/controller.(*AuthController).RegisterHandler-fm (4 handlers)
+[GIN-debug] POST   /api/login                --> icu/internal/controller.(*AuthController).LoginHandler-fm (4 handlers)
+[GIN] 2025/02/06 - 17:53:02 | 200 |     56.0986ms |             ::1 | GET      "/api/file/1738746689188796500895.png"
+2025/02/06 17:53:05 login
+
+2025/02/06 17:53:05 D:/GolangProject/icu/internal/repository/user_repository.go:31
+[87.193ms] [rows:1] SELECT * FROM `users` WHERE username = 'zhubo1997' ORDER BY `users`.`id` LIMIT 1
+[GIN] 2025/02/06 - 17:53:05 | 200 |     150.471ms |             ::1 | POST     "/api/login"

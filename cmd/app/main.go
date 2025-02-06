@@ -2,10 +2,12 @@ package main
 
 import (
 	"context"
+	"fmt"
 	"icu/config"
 	"icu/internal/route"
 	"os"
 	"os/signal"
+	"path/filepath"
 	"syscall"
 	"time"
 
@@ -16,21 +18,27 @@ import (
 )
 
 func main() {
+	// 检查并处理日志文件大小
+	logFile, err  := checkLogFileSize()
 	// 创建日志文件
-	logFile, err := os.Create("gin.log")
 	if err != nil {
-        log.Fatalf("无法创建日志文件: %v", err)
+		log.Fatalf("无法创建日志文件: %v", err)
     }
+	//关闭文件
     defer logFile.Close()
 	// 初始化配置文件
 	config.InitConfig()
 	// 初始化数据库
-	config.InitDB()
-
+	config.InitDB(logFile)
+	// 设置日志输出到文件
+	log.SetOutput(logFile)
+	
 	// 将 Gin 的日志输出到文件
 	gin.DefaultWriter = logFile
+	r := gin.New()
+	r.Use(gin.LoggerWithWriter(logFile))
+	r.Use(gin.Recovery())
 
-	r := gin.Default()
 	//限制文件上传的大小
 	r.MaxMultipartMemory = 8 << 20 // 8 MB
 
@@ -88,4 +96,63 @@ func main() {
 	log.Println("Closing database connection...")
 	config.CloseDB()
     log.Println("Server exiting")
+}
+
+const (
+	logDir      = "./logs"           // 日志文件目录
+	logFileName = "app.log"          // 默认日志文件名
+	maxSize     = 10 * 1024 * 1024  // 10 MB
+)
+
+// 获取当前日期，格式化为 "YYYY-MM-DD" 形式
+func getCurrentDate() string {
+	return time.Now().Format("2006-01-02")
+}
+
+// 检查并处理日志文件的大小，超出限制则切割日志
+func checkLogFileSize() (*os.File, error) {
+	// 获取日志文件的路径
+	logFilePath := filepath.Join(logDir, logFileName)
+
+	// 获取日志文件信息
+	info, err := os.Stat(logFilePath)
+	if err != nil {
+		if os.IsNotExist(err) {
+			// 如果日志文件不存在，创建日志目录并创建新文件
+			os.MkdirAll(logDir, os.ModePerm)
+			return createLogFile(logFilePath)
+		} else {
+			return nil, fmt.Errorf("无法获取日志文件信息: %v", err)
+		}
+	}
+
+	// 如果文件大小超过最大限制
+	if info.Size() > maxSize {
+		// 获取当前日期，用于日志文件重命名
+		currentDate := getCurrentDate()
+
+		// 重命名现有日志文件
+		newLogFilePath := filepath.Join(logDir, fmt.Sprintf("app-%s.log", currentDate))
+		err := os.Rename(logFilePath, newLogFilePath)
+		if err != nil {
+			return nil, fmt.Errorf("重命名日志文件失败: %v", err)
+		}
+		log.Printf("日志文件已切割，旧日志已重命名为: %s", newLogFilePath)
+
+		// 创建新的日志文件
+		return createLogFile(logFilePath)
+	}
+
+	// 返回现有的日志文件
+	return os.OpenFile(logFilePath, os.O_APPEND|os.O_CREATE|os.O_WRONLY, 0666)
+}
+
+// 创建日志文件并将其设置为日志输出目标
+func createLogFile(filePath string) (*os.File, error) {
+	// 打开文件，创建新文件
+	file, err := os.OpenFile(filePath, os.O_APPEND|os.O_CREATE|os.O_WRONLY, 0666)
+	if err != nil {
+		return nil, fmt.Errorf("无法创建日志文件: %v", err)
+	}
+	return file, nil
 }

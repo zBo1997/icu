@@ -6,10 +6,13 @@ import (
 	_ "embed"
 	"fmt"
 	"log"
+	"os"
+	"time"
 
 	"github.com/spf13/viper"
 	"gorm.io/driver/mysql"
 	"gorm.io/gorm"
+	"gorm.io/gorm/logger"
 )
 
 //go:embed config.yml
@@ -38,7 +41,7 @@ func InitConfig() {
 }
 
 // InitDB 初始化数据库连接
-func InitDB() {
+func InitDB(logFile *os.File) {
 	// 从 viper 获取配置
 	dbConfig := viper.Sub("database")
 	if dbConfig == nil {
@@ -54,9 +57,21 @@ func InitDB() {
 	// 构建 DSN（数据源名称）
 	dsn := fmt.Sprintf("%s:%s@tcp(%s:%d)/%s?charset=utf8&parseTime=True&loc=Local", username, password, host, port, dbname)
 
+	// 创建 GORM 的日志记录器
+	gormLogger := logger.New(
+		log.New(logFile, "\r\n", log.LstdFlags), // 将日志输出到文件
+		logger.Config{
+			LogLevel:      logger.Info,  // 设置日志级别
+			SlowThreshold: time.Second,  // 慢查询阈值
+			Colorful:      false,        // 关闭彩色输出
+		},
+	)
+
 	// 初始化数据库连接
 	var err error
-	DB, err = gorm.Open(mysql.Open(dsn), &gorm.Config{})
+	DB, err = gorm.Open(mysql.Open(dsn), &gorm.Config{
+		Logger: gormLogger,
+	})
 	if err != nil {
 		log.Fatalf("数据库连接失败: %v", err)
 	}
@@ -68,8 +83,8 @@ func InitDB() {
 	}
 
 	// 设置最大连接池数
-	sqlDB.SetMaxOpenConns(100)
-	sqlDB.SetMaxIdleConns(10)
+	sqlDB.SetMaxOpenConns(20)
+	sqlDB.SetMaxIdleConns(3)
 
 	log.Print("成功连接到数据库")
 }
