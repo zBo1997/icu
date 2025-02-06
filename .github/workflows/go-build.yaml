@@ -21,7 +21,7 @@ jobs:
     - name: Set up Go
       uses: actions/setup-go@v3
       with:
-        go-version: '1.19'  # 根据你项目的 Go 版本调整
+        go-version: '1.22.3'  # 根据你项目的 Go 版本调整
 
     - name: Cache Go modules
       uses: actions/cache@v3
