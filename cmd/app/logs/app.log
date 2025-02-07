@@ -31,3 +31,9 @@
 2025/02/06 17:53:05 D:/GolangProject/icu/internal/repository/user_repository.go:31
 [87.193ms] [rows:1] SELECT * FROM `users` WHERE username = 'zhubo1997' ORDER BY `users`.`id` LIMIT 1
 [GIN] 2025/02/06 - 17:53:05 | 200 |     150.471ms |             ::1 | POST     "/api/login"
+
+2025/02/07 11:03:21 D:/GolangProject/icu/config/db.go:72
+[error] failed to initialize database, got error dial tcp 127.0.0.1:3306: connectex: No connection could be made because the target machine actively refused it.
+
+2025/02/07 11:03:36 D:/GolangProject/icu/config/db.go:72
+[error] failed to initialize database, got error dial tcp 127.0.0.1:3306: connectex: No connection could be made because the target machine actively refused it.

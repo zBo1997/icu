@@ -59,7 +59,7 @@ func main() {
 				log.Printf("[ERROR] %s %s %s", c.Request.Method, c.Request.URL.Path,c.Errors)
 				// 发送 500 错误响应
 				c.JSON(http.StatusInternalServerError, gin.H{
-					"message": "未知错误,请联系我们",
+					"error": "未知错误,请联系我们",
 				})
 			}
 		}()
