@@ -16,7 +16,7 @@ func SetupRoutes(r *gin.Engine) {
 	// 上传文件
 	r.POST("/api/upload",authController.JwtMiddleware, fileController.UpLoadFile)
 	// 获取文件
-	r.GET("/api/file/:filename",authController.JwtMiddleware, fileController.GetFile)
+	r.GET("/api/file/:filename", fileController.GetFile)
 	// 例如：获取用户信息[校验中间件]
 	r.GET("/api/user/:id", authController.JwtMiddleware, userController.GetUser)
 	// 注册 API

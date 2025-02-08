@@ -179,3 +179,154 @@
 2025/02/08 14:17:44 D:/GolangProject/icu/internal/repository/user_repository.go:31
 [92.789ms] [rows:1] SELECT * FROM `users` WHERE username = 'zhubo3211' ORDER BY `users`.`id` LIMIT 1
 [GIN] 2025/02/08 - 14:17:44 | 200 |    214.2862ms |             ::1 | POST     "/api/login"
+2025/02/08 14:27:38 login
+
+2025/02/08 14:27:38 D:/GolangProject/icu/internal/repository/user_repository.go:31
+[91.531ms] [rows:1] SELECT * FROM `users` WHERE username = 'zhubo1997' ORDER BY `users`.`id` LIMIT 1
+[GIN] 2025/02/08 - 14:27:38 | 200 |    191.1718ms |             ::1 | POST     "/api/login"
+[GIN] 2025/02/08 - 14:56:36 | 401 |            0s |             ::1 | GET      "/api/file/1738746689188796500895.png"
+[GIN] 2025/02/08 - 14:56:39 | 401 |            0s |             ::1 | GET      "/api/file/1738746689188796500895.png"
+[GIN] 2025/02/08 - 14:56:49 | 401 |            0s |             ::1 | GET      "/api/file/1738746689188796500895.png"
+[GIN] 2025/02/08 - 14:57:21 | 401 |            0s |             ::1 | GET      "/api/file/1738746689188796500895.png"
+[GIN] 2025/02/08 - 14:57:27 | 401 |            0s |             ::1 | GET      "/api/file/1738746689188796500895.png"
+[GIN] 2025/02/08 - 15:07:23 | 404 |            0s |             ::1 | GET      "/file/your-uploaded-file.jpg"
+[GIN] 2025/02/08 - 15:07:36 | 404 |            0s |             ::1 | GET      "/file/1738746689188796500895.png"
+[GIN] 2025/02/08 - 15:07:46 | 404 |            0s |             ::1 | GET      "/file/1738746689188796500895.png"
+[GIN] 2025/02/08 - 15:08:05 | 401 |      1.0149ms |             ::1 | GET      "/api/file/1738746689188796500895.png"
+2025/02/08 15:15:49 Shutdown Server ...
+[GIN-debug] [WARNING] Running in "debug" mode. Switch to "release" mode in production.
+ - using env:	export GIN_MODE=release
+ - using code:	gin.SetMode(gin.ReleaseMode)
+
+[GIN-debug] GET    /api/ping                 --> icu/internal/route.PingHandler (4 handlers)
+[GIN-debug] POST   /api/upload               --> icu/internal/controller.(*FileController).UpLoadFile-fm (5 handlers)
+[GIN-debug] GET    /api/file/:filename       --> icu/internal/controller.(*FileController).GetFile-fm (4 handlers)
+[GIN-debug] GET    /api/user/:id             --> icu/internal/controller.(*UserController).GetUser-fm (5 handlers)
+[GIN-debug] POST   /api/register             --> icu/internal/controller.(*AuthController).RegisterHandler-fm (4 handlers)
+[GIN-debug] POST   /api/login                --> icu/internal/controller.(*AuthController).LoginHandler-fm (4 handlers)
+[GIN] 2025/02/08 - 15:16:28 | 200 |     95.3766ms |             ::1 | GET      "/api/file/1738746689188796500895.png"
+[GIN] 2025/02/08 - 15:16:28 | 200 |      2.6901ms |             ::1 | GET      "/api/file/1738746689188796500895.png"
+[GIN] 2025/02/08 - 15:17:54 | 200 |      1.0638ms |             ::1 | GET      "/api/file/1738746689188796500895.png"
+[GIN] 2025/02/08 - 15:24:24 | 200 |       3.337ms |             ::1 | GET      "/api/file/1738746689188796500895.png"
+[GIN] 2025/02/08 - 15:24:24 | 200 |       841.4µs |             ::1 | GET      "/api/file/1738746689188796500895.png"
+[GIN] 2025/02/08 - 15:25:43 | 200 |      2.9204ms |             ::1 | GET      "/api/file/1738746689188796500895.png"
+[GIN] 2025/02/08 - 15:25:43 | 200 |      6.6935ms |             ::1 | GET      "/api/file/1738746689188796500895.png"
+[GIN] 2025/02/08 - 15:26:51 | 200 |      3.2321ms |             ::1 | GET      "/api/file/1738746689188796500895.png"
+[GIN] 2025/02/08 - 15:26:51 | 404 |            0s |             ::1 | GET      "/api/file/"
+[GIN] 2025/02/08 - 15:26:51 | 200 |      1.7905ms |             ::1 | GET      "/api/file/1738746689188796500895.png"
+[GIN] 2025/02/08 - 15:27:04 | 200 |      1.0621ms |             ::1 | GET      "/api/file/1738746689188796500895.png"
+[GIN] 2025/02/08 - 15:27:04 | 200 |      2.4961ms |             ::1 | GET      "/api/file/1738746689188796500895.png"
+[GIN] 2025/02/08 - 15:28:05 | 404 |      1.0909ms |             ::1 | GET      "/api/file/{user.avatu}"
+[GIN] 2025/02/08 - 15:28:35 | 404 |            0s |             ::1 | GET      "/api/file/{user.avatar}"
+[GIN] 2025/02/08 - 15:28:51 | 404 |            0s |             ::1 | GET      "/api/file/undefined"
+2025/02/08 15:30:21 login
+
+2025/02/08 15:30:21 D:/GolangProject/icu/internal/repository/user_repository.go:31
+[89.217ms] [rows:1] SELECT * FROM `users` WHERE username = 'zhubo1997' ORDER BY `users`.`id` LIMIT 1
+[GIN] 2025/02/08 - 15:30:21 | 200 |    167.0967ms |             ::1 | POST     "/api/login"
+[GIN] 2025/02/08 - 15:30:46 | 401 |            0s |             ::1 | POST     "/api/upload"
+[GIN] 2025/02/08 - 15:30:50 | 200 |      3.6269ms |             ::1 | POST     "/api/upload"
+2025/02/08 15:31:18 login
+
+2025/02/08 15:31:19 D:/GolangProject/icu/internal/repository/user_repository.go:31
+[87.529ms] [rows:1] SELECT * FROM `users` WHERE username = 'zhubo1997' ORDER BY `users`.`id` LIMIT 1
+[GIN] 2025/02/08 - 15:31:19 | 200 |    153.0952ms |             ::1 | POST     "/api/login"
+[GIN] 2025/02/08 - 15:31:19 | 404 |            0s |             ::1 | GET      "/api/file/undefined"
+[GIN-debug] [WARNING] Running in "debug" mode. Switch to "release" mode in production.
+ - using env:	export GIN_MODE=release
+ - using code:	gin.SetMode(gin.ReleaseMode)
+
+[GIN-debug] GET    /api/ping                 --> icu/internal/route.PingHandler (4 handlers)
+[GIN-debug] POST   /api/upload               --> icu/internal/controller.(*FileController).UpLoadFile-fm (5 handlers)
+[GIN-debug] GET    /api/file/:filename       --> icu/internal/controller.(*FileController).GetFile-fm (4 handlers)
+[GIN-debug] GET    /api/user/:id             --> icu/internal/controller.(*UserController).GetUser-fm (5 handlers)
+[GIN-debug] POST   /api/register             --> icu/internal/controller.(*AuthController).RegisterHandler-fm (4 handlers)
+[GIN-debug] POST   /api/login                --> icu/internal/controller.(*AuthController).LoginHandler-fm (4 handlers)
+2025/02/08 15:32:25 login
+
+2025/02/08 15:32:25 D:/GolangProject/icu/internal/repository/user_repository.go:31
+[98.462ms] [rows:1] SELECT * FROM `users` WHERE username = 'zhubo1997' ORDER BY `users`.`id` LIMIT 1
+[GIN] 2025/02/08 - 15:32:25 | 200 |    165.4914ms |             ::1 | POST     "/api/login"
+[GIN] 2025/02/08 - 15:32:25 | 404 |       504.3µs |             ::1 | GET      "/api/file/undefined"
+[GIN-debug] [WARNING] Running in "debug" mode. Switch to "release" mode in production.
+ - using env:	export GIN_MODE=release
+ - using code:	gin.SetMode(gin.ReleaseMode)
+
+[GIN-debug] GET    /api/ping                 --> icu/internal/route.PingHandler (4 handlers)
+[GIN-debug] POST   /api/upload               --> icu/internal/controller.(*FileController).UpLoadFile-fm (5 handlers)
+[GIN-debug] GET    /api/file/:filename       --> icu/internal/controller.(*FileController).GetFile-fm (4 handlers)
+[GIN-debug] GET    /api/user/:id             --> icu/internal/controller.(*UserController).GetUser-fm (5 handlers)
+[GIN-debug] POST   /api/register             --> icu/internal/controller.(*AuthController).RegisterHandler-fm (4 handlers)
+[GIN-debug] POST   /api/login                --> icu/internal/controller.(*AuthController).LoginHandler-fm (4 handlers)
+2025/02/08 15:35:05 login
+
+2025/02/08 15:35:05 D:/GolangProject/icu/internal/repository/user_repository.go:31
+[86.844ms] [rows:1] SELECT * FROM `users` WHERE username = 'zhubo1997' ORDER BY `users`.`id` LIMIT 1
+[GIN] 2025/02/08 - 15:35:05 | 200 |    155.2214ms |             ::1 | POST     "/api/login"
+[GIN] 2025/02/08 - 15:35:06 | 200 |     53.2954ms |             ::1 | GET      "/api/file/17389998501824965003600.jpg"
+[GIN] 2025/02/08 - 15:35:06 | 200 |      1.3615ms |             ::1 | GET      "/api/file/17389998501824965003600.jpg"
+[GIN] 2025/02/08 - 15:35:08 | 200 |       2.684ms |             ::1 | GET      "/api/file/1738746689188796500895.png"
+[GIN] 2025/02/08 - 15:35:08 | 200 |      1.2071ms |             ::1 | GET      "/api/file/1738746689188796500895.png"
+[GIN] 2025/02/08 - 15:41:36 | 404 |            0s |             ::1 | GET      "/api/file/用户"
+[GIN] 2025/02/08 - 15:41:55 | 404 |            0s |             ::1 | GET      "/api/file/http://localhost:8080/api/file/undefined"
+[GIN] 2025/02/08 - 15:42:36 | 404 |            0s |             ::1 | GET      "/api/file/http://localhost:8080/api/file/undefined"
+[GIN] 2025/02/08 - 15:42:36 | 304 |       916.2µs |             ::1 | GET      "/api/file/17389998501824965003600.jpg"
+[GIN] 2025/02/08 - 15:46:03 | 404 |            0s |             ::1 | GET      "/api/file/http://localhost:8080/api/file/undefined"
+[GIN] 2025/02/08 - 15:46:10 | 404 |            0s |             ::1 | GET      "/api/file/http://localhost:8080/api/file/17389998501824965003600.jpg"
+[GIN] 2025/02/08 - 15:46:20 | 404 |            0s |             ::1 | GET      "/api/file/http://localhost:8080/api/file/undefined"
+[GIN] 2025/02/08 - 15:46:20 | 304 |       161.1µs |             ::1 | GET      "/api/file/17389998501824965003600.jpg"
+[GIN] 2025/02/08 - 15:46:20 | 404 |            0s |             ::1 | GET      "/api/file/http://localhost:8080/api/file/17389998501824965003600.jpg"
+[GIN] 2025/02/08 - 15:48:41 | 200 |      1.2693ms |             ::1 | GET      "/api/file/17389998501824965003600.jpg"
+[GIN] 2025/02/08 - 15:48:41 | 200 |       556.6µs |             ::1 | GET      "/api/file/17389998501824965003600.jpg"
+[GIN] 2025/02/08 - 15:48:42 | 404 |      5.2048ms |             ::1 | GET      "/api/file/undefined"
+[GIN] 2025/02/08 - 15:48:42 | 200 |      1.9081ms |             ::1 | GET      "/api/file/17389998501824965003600.jpg"
+[GIN] 2025/02/08 - 15:48:42 | 200 |       611.1µs |             ::1 | GET      "/api/file/17389998501824965003600.jpg"
+[GIN] 2025/02/08 - 15:48:56 | 200 |       568.4µs |             ::1 | GET      "/api/file/17389998501824965003600.jpg"
+[GIN] 2025/02/08 - 15:48:56 | 200 |       612.4µs |             ::1 | GET      "/api/file/17389998501824965003600.jpg"
+[GIN] 2025/02/08 - 15:49:04 | 200 |      1.0875ms |             ::1 | GET      "/api/file/17389998501824965003600.jpg"
+[GIN] 2025/02/08 - 15:49:05 | 200 |       652.2µs |             ::1 | GET      "/api/file/17389998501824965003600.jpg"
+[GIN] 2025/02/08 - 15:49:10 | 200 |         862µs |             ::1 | GET      "/api/file/17389998501824965003600.jpg"
+[GIN] 2025/02/08 - 15:49:10 | 200 |       155.4µs |             ::1 | GET      "/api/file/17389998501824965003600.jpg"
+[GIN] 2025/02/08 - 15:49:33 | 200 |       916.8µs |             ::1 | GET      "/api/file/17389998501824965003600.jpg"
+[GIN] 2025/02/08 - 15:49:33 | 200 |      1.4894ms |             ::1 | GET      "/api/file/17389998501824965003600.jpg"
+[GIN] 2025/02/08 - 15:49:38 | 404 |       512.1µs |             ::1 | GET      "/api/file/undefined"
+[GIN] 2025/02/08 - 15:49:38 | 200 |       578.8µs |             ::1 | GET      "/api/file/17389998501824965003600.jpg"
+[GIN] 2025/02/08 - 15:49:38 | 200 |       960.8µs |             ::1 | GET      "/api/file/17389998501824965003600.jpg"
+[GIN-debug] [WARNING] Running in "debug" mode. Switch to "release" mode in production.
+ - using env:	export GIN_MODE=release
+ - using code:	gin.SetMode(gin.ReleaseMode)
+
+[GIN-debug] GET    /api/ping                 --> icu/internal/route.PingHandler (4 handlers)
+[GIN-debug] POST   /api/upload               --> icu/internal/controller.(*FileController).UpLoadFile-fm (5 handlers)
+[GIN-debug] GET    /api/file/:filename       --> icu/internal/controller.(*FileController).GetFile-fm (4 handlers)
+[GIN-debug] GET    /api/user/:id             --> icu/internal/controller.(*UserController).GetUser-fm (5 handlers)
+[GIN-debug] POST   /api/register             --> icu/internal/controller.(*AuthController).RegisterHandler-fm (4 handlers)
+[GIN-debug] POST   /api/login                --> icu/internal/controller.(*AuthController).LoginHandler-fm (4 handlers)
+[GIN] 2025/02/08 - 15:55:01 | 404 |      1.5177ms |             ::1 | GET      "/api/file/undefined"
+[GIN] 2025/02/08 - 15:55:01 | 304 |       509.1µs |             ::1 | GET      "/api/file/17389998501824965003600.jpg"
+2025/02/08 15:56:23 login
+
+2025/02/08 15:56:23 D:/GolangProject/icu/internal/repository/user_repository.go:31
+[85.782ms] [rows:1] SELECT * FROM `users` WHERE username = 'zhubo1997' ORDER BY `users`.`id` LIMIT 1
+[GIN] 2025/02/08 - 15:56:23 | 200 |    152.0082ms |             ::1 | POST     "/api/login"
+[GIN] 2025/02/08 - 15:57:31 | 304 |       488.2µs |             ::1 | GET      "/api/file/17389998501824965003600.jpg"
+2025/02/08 15:57:37 login
+
+2025/02/08 15:57:37 D:/GolangProject/icu/internal/repository/user_repository.go:31
+[84.535ms] [rows:1] SELECT * FROM `users` WHERE username = 'zhubo1997' ORDER BY `users`.`id` LIMIT 1
+[GIN] 2025/02/08 - 15:57:37 | 200 |    207.3832ms |             ::1 | POST     "/api/login"
+[GIN] 2025/02/08 - 15:57:39 | 404 |            0s |             ::1 | GET      "/api/file/undefined"
+[GIN] 2025/02/08 - 15:58:03 | 404 |         507µs |             ::1 | GET      "/api/file/undefined"
+[GIN] 2025/02/08 - 15:58:04 | 404 |       504.2µs |             ::1 | GET      "/api/file/undefined"
+[GIN] 2025/02/08 - 16:07:29 | 404 |            0s |             ::1 | GET      "/api/file/undefined"
+[GIN] 2025/02/08 - 16:07:29 | 304 |       541.5µs |             ::1 | GET      "/api/file/17389998501824965003600.jpg"
+[GIN] 2025/02/08 - 16:07:38 | 404 |       806.1µs |             ::1 | GET      "/api/file/undefined"
+[GIN] 2025/02/08 - 16:07:38 | 404 |       511.7µs |             ::1 | GET      "/api/file/undefined"
+[GIN] 2025/02/08 - 16:07:45 | 404 |       508.4µs |             ::1 | GET      "/api/file/undefined"
+[GIN] 2025/02/08 - 16:07:46 | 404 |       507.5µs |             ::1 | GET      "/api/file/undefined"
+2025/02/08 16:07:54 login
+
+2025/02/08 16:07:54 D:/GolangProject/icu/internal/repository/user_repository.go:31
+[83.870ms] [rows:1] SELECT * FROM `users` WHERE username = 'zhubo1997' ORDER BY `users`.`id` LIMIT 1
+[GIN] 2025/02/08 - 16:07:54 | 200 |    155.1201ms |             ::1 | POST     "/api/login"
+[GIN] 2025/02/08 - 16:07:54 | 404 |            0s |             ::1 | GET      "/api/file/undefined"
