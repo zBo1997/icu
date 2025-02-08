@@ -25,7 +25,7 @@ func NewAuthController() *AuthController{
 func (a *AuthController) LoginHandler(c *gin.Context) {
 	userInfo, err := a.userService.Login(c)
 	if err != nil {
-		c.JSON(http.StatusInternalServerError, gin.H{"error": "Failed to login user"})
+		c.JSON(http.StatusOK, gin.H{"data": map[string]string{"error": err.Error()}})
 		return
 	}
 	// 返回 JWT
@@ -36,7 +36,7 @@ func (a *AuthController) LoginHandler(c *gin.Context) {
 func  (a *AuthController) RegisterHandler(c *gin.Context) {
 	user, err := a.userService.Register(c)
 	if err != nil {
-		c.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
+		c.JSON(http.StatusOK, gin.H{"data": map[string]string{"error": err.Error()}})
 		return
 		
 	}
@@ -47,7 +47,7 @@ func  (a *AuthController) RegisterHandler(c *gin.Context) {
 func  (a *AuthController) JwtMiddleware(c *gin.Context) {
 	tokenStr := c.GetHeader("Authorization")
 	if tokenStr == "" {
-		c.JSON(http.StatusUnauthorized, gin.H{"error": "Authorization header missing"})
+		c.JSON(http.StatusUnauthorized, gin.H{"data": map[string]string{"error": "未登录,请登陆后再试"}})
 		c.Abort()
 		return
 	}
@@ -61,7 +61,7 @@ func  (a *AuthController) JwtMiddleware(c *gin.Context) {
 	})
 
 	if err != nil || !token.Valid {
-		c.JSON(http.StatusUnauthorized, gin.H{"error": "Invalid or expired token"})
+		c.JSON(http.StatusUnauthorized, gin.H{"data": map[string]string{"error": "未登录,请登陆后再试"}})
 		c.Abort()
 		return
 	}

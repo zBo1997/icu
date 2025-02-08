@@ -8,13 +8,27 @@
 [GIN-debug] GET    /api/user/:id             --> icu/internal/controller.(*UserController).GetUser-fm (5 handlers)
 [GIN-debug] POST   /api/register             --> icu/internal/controller.(*AuthController).RegisterHandler-fm (4 handlers)
 [GIN-debug] POST   /api/login                --> icu/internal/controller.(*AuthController).LoginHandler-fm (4 handlers)
-[GIN] 2025/02/06 - 17:50:59 | 401 |      1.0534ms |             ::1 | GET      "/api/file/1738746689188796500895.png"
+[GIN] 2025/02/08 - 13:26:09 | 404 |            0s |             ::1 | POST     "/login"
+2025/02/08 13:27:42 login
 
-2025/02/06 17:51:07 D:/GolangProject/icu/internal/repository/user_repository.go:31
-[95.256ms] [rows:1] SELECT * FROM `users` WHERE username = 'zhubo1997' ORDER BY `users`.`id` LIMIT 1
-[GIN] 2025/02/06 - 17:51:07 | 200 |    242.8139ms |             ::1 | POST     "/api/login"
-[GIN] 2025/02/06 - 17:51:10 | 401 |       530.9µs |             ::1 | GET      "/api/file/1738746689188796500895.png"
-[GIN] 2025/02/06 - 17:51:24 | 200 |    219.3996ms |             ::1 | GET      "/api/file/1738746689188796500895.png"
+2025/02/08 13:27:42 D:/GolangProject/icu/internal/repository/user_repository.go:31
+[391.070ms] [rows:1] SELECT * FROM `users` WHERE username = 'zhubo1997' ORDER BY `users`.`id` LIMIT 1
+[GIN] 2025/02/08 - 13:27:43 | 200 |    466.4361ms |             ::1 | POST     "/api/login"
+2025/02/08 13:27:59 login
+
+2025/02/08 13:27:59 D:/GolangProject/icu/internal/repository/user_repository.go:31
+[122.124ms] [rows:1] SELECT * FROM `users` WHERE username = 'zhubo1997' ORDER BY `users`.`id` LIMIT 1
+[GIN] 2025/02/08 - 13:27:59 | 500 |     191.293ms |             ::1 | POST     "/api/login"
+2025/02/08 13:28:04 login
+
+2025/02/08 13:28:04 D:/GolangProject/icu/internal/repository/user_repository.go:31
+[89.048ms] [rows:1] SELECT * FROM `users` WHERE username = 'zhubo1997' ORDER BY `users`.`id` LIMIT 1
+[GIN] 2025/02/08 - 13:28:04 | 500 |    164.9479ms |             ::1 | POST     "/api/login"
+2025/02/08 13:28:53 login
+
+2025/02/08 13:28:54 D:/GolangProject/icu/internal/repository/user_repository.go:31
+[88.491ms] [rows:1] SELECT * FROM `users` WHERE username = 'zhubo1997' ORDER BY `users`.`id` LIMIT 1
+[GIN] 2025/02/08 - 13:29:19 | 500 |   25.6265694s |             ::1 | POST     "/api/login"
 [GIN-debug] [WARNING] Running in "debug" mode. Switch to "release" mode in production.
  - using env:	export GIN_MODE=release
  - using code:	gin.SetMode(gin.ReleaseMode)
@@ -25,15 +39,143 @@
 [GIN-debug] GET    /api/user/:id             --> icu/internal/controller.(*UserController).GetUser-fm (5 handlers)
 [GIN-debug] POST   /api/register             --> icu/internal/controller.(*AuthController).RegisterHandler-fm (4 handlers)
 [GIN-debug] POST   /api/login                --> icu/internal/controller.(*AuthController).LoginHandler-fm (4 handlers)
-[GIN] 2025/02/06 - 17:53:02 | 200 |     56.0986ms |             ::1 | GET      "/api/file/1738746689188796500895.png"
-2025/02/06 17:53:05 login
+2025/02/08 13:32:47 login
 
-2025/02/06 17:53:05 D:/GolangProject/icu/internal/repository/user_repository.go:31
-[87.193ms] [rows:1] SELECT * FROM `users` WHERE username = 'zhubo1997' ORDER BY `users`.`id` LIMIT 1
-[GIN] 2025/02/06 - 17:53:05 | 200 |     150.471ms |             ::1 | POST     "/api/login"
+2025/02/08 13:32:47 D:/GolangProject/icu/internal/repository/user_repository.go:31
+[88.396ms] [rows:1] SELECT * FROM `users` WHERE username = 'zhubo1997' ORDER BY `users`.`id` LIMIT 1
+[GIN] 2025/02/08 - 13:32:51 | 500 |    3.9244706s |             ::1 | POST     "/api/login"
+2025/02/08 13:34:51 login
 
-2025/02/07 11:03:21 D:/GolangProject/icu/config/db.go:72
-[error] failed to initialize database, got error dial tcp 127.0.0.1:3306: connectex: No connection could be made because the target machine actively refused it.
+2025/02/08 13:34:51 D:/GolangProject/icu/internal/repository/user_repository.go:31
+[85.551ms] [rows:1] SELECT * FROM `users` WHERE username = 'zhubo1997' ORDER BY `users`.`id` LIMIT 1
+[GIN] 2025/02/08 - 13:34:51 | 500 |    150.7927ms |             ::1 | POST     "/api/login"
+2025/02/08 13:35:09 login
 
-2025/02/07 11:03:36 D:/GolangProject/icu/config/db.go:72
-[error] failed to initialize database, got error dial tcp 127.0.0.1:3306: connectex: No connection could be made because the target machine actively refused it.
+2025/02/08 13:35:09 D:/GolangProject/icu/internal/repository/user_repository.go:31
+[86.757ms] [rows:1] SELECT * FROM `users` WHERE username = 'zhubo1997' ORDER BY `users`.`id` LIMIT 1
+[GIN] 2025/02/08 - 13:35:09 | 500 |     157.616ms |             ::1 | POST     "/api/login"
+[GIN-debug] [WARNING] Running in "debug" mode. Switch to "release" mode in production.
+ - using env:	export GIN_MODE=release
+ - using code:	gin.SetMode(gin.ReleaseMode)
+
+[GIN-debug] GET    /api/ping                 --> icu/internal/route.PingHandler (4 handlers)
+[GIN-debug] POST   /api/upload               --> icu/internal/controller.(*FileController).UpLoadFile-fm (5 handlers)
+[GIN-debug] GET    /api/file/:filename       --> icu/internal/controller.(*FileController).GetFile-fm (5 handlers)
+[GIN-debug] GET    /api/user/:id             --> icu/internal/controller.(*UserController).GetUser-fm (5 handlers)
+[GIN-debug] POST   /api/register             --> icu/internal/controller.(*AuthController).RegisterHandler-fm (4 handlers)
+[GIN-debug] POST   /api/login                --> icu/internal/controller.(*AuthController).LoginHandler-fm (4 handlers)
+2025/02/08 13:37:01 login
+
+2025/02/08 13:37:01 D:/GolangProject/icu/internal/repository/user_repository.go:31
+[87.445ms] [rows:1] SELECT * FROM `users` WHERE username = 'zhubo1997' ORDER BY `users`.`id` LIMIT 1
+[GIN] 2025/02/08 - 13:37:01 | 200 |     156.399ms |             ::1 | POST     "/api/login"
+2025/02/08 13:37:09 login
+
+2025/02/08 13:37:09 D:/GolangProject/icu/internal/repository/user_repository.go:31
+[89.568ms] [rows:1] SELECT * FROM `users` WHERE username = 'zhubo1997' ORDER BY `users`.`id` LIMIT 1
+[GIN] 2025/02/08 - 13:37:09 | 200 |    161.2641ms |             ::1 | POST     "/api/login"
+2025/02/08 13:37:32 login
+
+2025/02/08 13:37:33 D:/GolangProject/icu/internal/repository/user_repository.go:31
+[86.577ms] [rows:1] SELECT * FROM `users` WHERE username = 'zhubo1997' ORDER BY `users`.`id` LIMIT 1
+[GIN] 2025/02/08 - 13:37:33 | 200 |    152.9815ms |             ::1 | POST     "/api/login"
+2025/02/08 13:37:57 login
+
+2025/02/08 13:37:57 D:/GolangProject/icu/internal/repository/user_repository.go:31
+[89.819ms] [rows:1] SELECT * FROM `users` WHERE username = 'zhubo1997' ORDER BY `users`.`id` LIMIT 1
+[GIN] 2025/02/08 - 13:37:57 | 200 |    157.7573ms |             ::1 | POST     "/api/login"
+2025/02/08 13:39:08 login
+
+2025/02/08 13:39:08 D:/GolangProject/icu/internal/repository/user_repository.go:31
+[85.139ms] [rows:1] SELECT * FROM `users` WHERE username = 'zhubo1997' ORDER BY `users`.`id` LIMIT 1
+[GIN] 2025/02/08 - 13:39:08 | 200 |    153.4235ms |             ::1 | POST     "/api/login"
+2025/02/08 13:40:12 login
+
+2025/02/08 13:40:13 D:/GolangProject/icu/internal/repository/user_repository.go:31
+[86.980ms] [rows:1] SELECT * FROM `users` WHERE username = 'zhubo1997' ORDER BY `users`.`id` LIMIT 1
+[GIN] 2025/02/08 - 13:40:13 | 200 |    151.3055ms |             ::1 | POST     "/api/login"
+2025/02/08 13:40:28 login
+
+2025/02/08 13:40:28 D:/GolangProject/icu/internal/repository/user_repository.go:31
+[91.826ms] [rows:1] SELECT * FROM `users` WHERE username = 'zhubo1997' ORDER BY `users`.`id` LIMIT 1
+[GIN] 2025/02/08 - 13:40:28 | 200 |     158.769ms |             ::1 | POST     "/api/login"
+2025/02/08 13:40:40 login
+
+2025/02/08 13:40:40 D:/GolangProject/icu/internal/repository/user_repository.go:31
+[86.441ms] [rows:1] SELECT * FROM `users` WHERE username = 'zhubo1997' ORDER BY `users`.`id` LIMIT 1
+[GIN] 2025/02/08 - 13:40:40 | 200 |    155.3515ms |             ::1 | POST     "/api/login"
+2025/02/08 13:41:26 login
+
+2025/02/08 13:41:26 D:/GolangProject/icu/internal/repository/user_repository.go:31
+[84.490ms] [rows:1] SELECT * FROM `users` WHERE username = 'zhubo1997' ORDER BY `users`.`id` LIMIT 1
+[GIN] 2025/02/08 - 13:41:26 | 200 |     154.145ms |             ::1 | POST     "/api/login"
+[GIN-debug] [WARNING] Running in "debug" mode. Switch to "release" mode in production.
+ - using env:	export GIN_MODE=release
+ - using code:	gin.SetMode(gin.ReleaseMode)
+
+[GIN-debug] GET    /api/ping                 --> icu/internal/route.PingHandler (4 handlers)
+[GIN-debug] POST   /api/upload               --> icu/internal/controller.(*FileController).UpLoadFile-fm (5 handlers)
+[GIN-debug] GET    /api/file/:filename       --> icu/internal/controller.(*FileController).GetFile-fm (5 handlers)
+[GIN-debug] GET    /api/user/:id             --> icu/internal/controller.(*UserController).GetUser-fm (5 handlers)
+[GIN-debug] POST   /api/register             --> icu/internal/controller.(*AuthController).RegisterHandler-fm (4 handlers)
+[GIN-debug] POST   /api/login                --> icu/internal/controller.(*AuthController).LoginHandler-fm (4 handlers)
+2025/02/08 14:02:25 login
+
+2025/02/08 14:02:25 D:/GolangProject/icu/internal/repository/user_repository.go:31
+[98.378ms] [rows:1] SELECT * FROM `users` WHERE username = 'zhubo1997' ORDER BY `users`.`id` LIMIT 1
+[GIN] 2025/02/08 - 14:02:26 | 200 |    179.6398ms |             ::1 | POST     "/api/login"
+2025/02/08 14:02:44 login
+
+2025/02/08 14:02:44 D:/GolangProject/icu/internal/repository/user_repository.go:31
+[103.599ms] [rows:1] SELECT * FROM `users` WHERE username = 'zhubo1997' ORDER BY `users`.`id` LIMIT 1
+[GIN] 2025/02/08 - 14:02:44 | 200 |    166.8783ms |             ::1 | POST     "/api/login"
+2025/02/08 14:02:48 login
+
+2025/02/08 14:02:48 D:/GolangProject/icu/internal/repository/user_repository.go:31
+[104.874ms] [rows:1] SELECT * FROM `users` WHERE username = 'zhubo1997' ORDER BY `users`.`id` LIMIT 1
+[GIN] 2025/02/08 - 14:02:48 | 200 |    169.0302ms |             ::1 | POST     "/api/login"
+[GIN-debug] [WARNING] Running in "debug" mode. Switch to "release" mode in production.
+ - using env:	export GIN_MODE=release
+ - using code:	gin.SetMode(gin.ReleaseMode)
+
+[GIN-debug] GET    /api/ping                 --> icu/internal/route.PingHandler (4 handlers)
+[GIN-debug] POST   /api/upload               --> icu/internal/controller.(*FileController).UpLoadFile-fm (5 handlers)
+[GIN-debug] GET    /api/file/:filename       --> icu/internal/controller.(*FileController).GetFile-fm (5 handlers)
+[GIN-debug] GET    /api/user/:id             --> icu/internal/controller.(*UserController).GetUser-fm (5 handlers)
+[GIN-debug] POST   /api/register             --> icu/internal/controller.(*AuthController).RegisterHandler-fm (4 handlers)
+[GIN-debug] POST   /api/login                --> icu/internal/controller.(*AuthController).LoginHandler-fm (4 handlers)
+
+2025/02/08 14:11:43 D:/GolangProject/icu/internal/repository/user_repository.go:31
+[89.335ms] [rows:1] SELECT * FROM `users` WHERE username = 'zhubo6984' ORDER BY `users`.`id` LIMIT 1
+[GIN] 2025/02/08 - 14:11:43 | 200 |     92.3355ms |             ::1 | POST     "/api/register"
+[GIN-debug] [WARNING] Running in "debug" mode. Switch to "release" mode in production.
+ - using env:	export GIN_MODE=release
+ - using code:	gin.SetMode(gin.ReleaseMode)
+
+[GIN-debug] GET    /api/ping                 --> icu/internal/route.PingHandler (4 handlers)
+[GIN-debug] POST   /api/upload               --> icu/internal/controller.(*FileController).UpLoadFile-fm (5 handlers)
+[GIN-debug] GET    /api/file/:filename       --> icu/internal/controller.(*FileController).GetFile-fm (5 handlers)
+[GIN-debug] GET    /api/user/:id             --> icu/internal/controller.(*UserController).GetUser-fm (5 handlers)
+[GIN-debug] POST   /api/register             --> icu/internal/controller.(*AuthController).RegisterHandler-fm (4 handlers)
+[GIN-debug] POST   /api/login                --> icu/internal/controller.(*AuthController).LoginHandler-fm (4 handlers)
+
+2025/02/08 14:14:36 D:/GolangProject/icu/internal/repository/user_repository.go:31
+[94.880ms] [rows:1] SELECT * FROM `users` WHERE username = 'zhubo6984' ORDER BY `users`.`id` LIMIT 1
+[GIN] 2025/02/08 - 14:14:36 | 200 |     98.2379ms |             ::1 | POST     "/api/register"
+
+2025/02/08 14:14:46 D:/GolangProject/icu/internal/repository/user_repository.go:31 record not found
+[92.764ms] [rows:0] SELECT * FROM `users` WHERE username = 'zhubo3211' ORDER BY `users`.`id` LIMIT 1
+
+2025/02/08 14:14:46 D:/GolangProject/icu/internal/repository/auth_repository.go:32
+[333.518ms] [rows:1] INSERT INTO `users` (`name`,`email`,`password`,`username`) VALUES ('ZhuBo_3211','','$2a$10$hDKVpqlPDD8IBpJPuXEOB.f3atdoGwmW2F..cGZziuaL04eoigLbW','zhubo3211')
+[GIN] 2025/02/08 - 14:14:46 | 200 |    532.0298ms |             ::1 | POST     "/api/register"
+2025/02/08 14:14:53 login
+
+2025/02/08 14:14:53 D:/GolangProject/icu/internal/repository/user_repository.go:31
+[92.411ms] [rows:1] SELECT * FROM `users` WHERE username = 'zhubo3211' ORDER BY `users`.`id` LIMIT 1
+[GIN] 2025/02/08 - 14:14:53 | 200 |    193.3736ms |             ::1 | POST     "/api/login"
+2025/02/08 14:17:43 login
+
+2025/02/08 14:17:44 D:/GolangProject/icu/internal/repository/user_repository.go:31
+[92.789ms] [rows:1] SELECT * FROM `users` WHERE username = 'zhubo3211' ORDER BY `users`.`id` LIMIT 1
+[GIN] 2025/02/08 - 14:17:44 | 200 |    214.2862ms |             ::1 | POST     "/api/login"

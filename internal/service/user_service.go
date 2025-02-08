@@ -6,7 +6,6 @@ import (
 	"icu/internal/model"
 	"icu/internal/repository"
 	"log"
-	"net/http"
 	"time"
 
 	"github.com/gin-gonic/gin"
@@ -40,25 +39,25 @@ func (s *UserService) Login(c *gin.Context)  (map[string]interface{}, error) {
 	var reqUser model.User
 	log.Println("login")
 	if err := c.ShouldBindJSON(&reqUser); err != nil {
-		return nil, errors.New("invalid request")
+		return nil, errors.New("请求错误")
 	}
 
 	// 检查用户是否存在
 	dbUser, err := s.userRepo.UserExistByName(reqUser.Username)
 	if err != nil || dbUser == nil {
-		return nil, errors.New("user not found")
+		return nil, errors.New("未找到用户")
 	}
 
 	// 检查密码是否匹配
 	err = bcrypt.CompareHashAndPassword([]byte(dbUser.Password), []byte(reqUser.Password))
 	if err != nil {
-		return nil, errors.New("invalid password")
+		return nil, errors.New("密码错误")
 	}
 
 	// 生成 JWT
 	token, err := generateJWT(dbUser.Username)
 	if err != nil {
-		return nil, errors.New("failed to generate token")
+		return nil, errors.New("登录失败")
 	}
 
 		// 返回用户信息（排除密码）和 Token
@@ -79,25 +78,21 @@ func (s *UserService) Login(c *gin.Context)  (map[string]interface{}, error) {
 func  (s *UserService) Register(c *gin.Context) (*model.User, error) {
 	var user model.User
 	if err := c.ShouldBindJSON(&user); err != nil {
-		c.JSON(http.StatusBadRequest, gin.H{"error": "Invalid request"})
-		return &user, errors.New("invalid request")
+		return &user, errors.New("非法请求")
 	}
 	// 检查用户是否存在
 	if user, _ := s.userRepo.UserExistByName(user.Username); user != nil {
-		log.Println("user already exists")
-		return user, errors.New("user already exists")
+		return user, errors.New("用户已经存在")
 	}
 
 	// 检查密码是否为空
 	if user.Password == "" {
-		log.Println("Password is required")
-		return &user, errors.New("password is required")
+		return &user, errors.New("请填写密码")
 	}
 
 	// 检查密码是否为空
 	if user.Username == "" {
-		log.Println("username is required")
-		return &user, errors.New("username is required")
+		return &user, errors.New("请填写用户名称")
 	}
 	return s.authRepo.SaveUser(user.Username,user.Password,user.Name,user.Email)
 	
