@@ -1,0 +1,238 @@
+[GIN-debug] [WARNING] Running in "debug" mode. Switch to "release" mode in production.
+ - using env:	export GIN_MODE=release
+ - using code:	gin.SetMode(gin.ReleaseMode)
+
+[GIN-debug] GET    /api/ping                 --> icu/internal/route.PingHandler (4 handlers)
+[GIN-debug] POST   /api/upload               --> icu/internal/controller.(*FileController).UpLoadFile-fm (5 handlers)
+[GIN-debug] GET    /api/file/:filename       --> icu/internal/controller.(*FileController).GetFile-fm (4 handlers)
+[GIN-debug] GET    /api/user/:id             --> icu/internal/controller.(*UserController).GetUser-fm (5 handlers)
+[GIN-debug] POST   /api/register             --> icu/internal/controller.(*AuthController).RegisterHandler-fm (4 handlers)
+[GIN-debug] POST   /api/login                --> icu/internal/controller.(*AuthController).LoginHandler-fm (4 handlers)
+[GIN] 2025/02/10 - 15:13:59 | 404 |            0s |             ::1 | POST     "/api/api/upload"
+[GIN] 2025/02/10 - 15:15:09 | 401 |       998.5µs |             ::1 | POST     "/api/upload"
+[GIN] 2025/02/10 - 15:16:11 | 404 |       507.7µs |             ::1 | GET      "/api/file/undefined"
+[GIN] 2025/02/10 - 15:16:11 | 200 |     72.5831ms |             ::1 | GET      "/api/file/17389998501824965003600.jpg"
+[GIN] 2025/02/10 - 15:16:11 | 200 |      1.0004ms |             ::1 | GET      "/api/file/17389998501824965003600.jpg"
+[GIN] 2025/02/10 - 15:41:12 | 404 |      2.5996ms |             ::1 | GET      "/api/file/undefined"
+[GIN] 2025/02/10 - 15:41:12 | 200 |      2.6319ms |             ::1 | GET      "/api/file/17389998501824965003600.jpg"
+[GIN] 2025/02/10 - 15:41:12 | 200 |       361.8µs |             ::1 | GET      "/api/file/17389998501824965003600.jpg"
+[GIN] 2025/02/10 - 15:41:32 | 200 |            0s |             ::1 | GET      "/api/file/17389998501824965003600.jpg"
+[GIN] 2025/02/10 - 15:41:32 | 200 |       578.9µs |             ::1 | GET      "/api/file/17389998501824965003600.jpg"
+[GIN] 2025/02/10 - 15:46:32 | 401 |       1.614ms |             ::1 | POST     "/api/upload"
+[GIN] 2025/02/10 - 15:46:40 | 404 |       505.8µs |             ::1 | GET      "/api/file/undefined"
+[GIN] 2025/02/10 - 15:46:40 | 200 |      1.1153ms |             ::1 | GET      "/api/file/17389998501824965003600.jpg"
+[GIN] 2025/02/10 - 15:46:40 | 200 |       514.1µs |             ::1 | GET      "/api/file/17389998501824965003600.jpg"
+[GIN] 2025/02/10 - 15:46:45 | 401 |            0s |             ::1 | POST     "/api/upload"
+[GIN] 2025/02/10 - 15:48:43 | 404 |         682µs |             ::1 | GET      "/api/file/undefined"
+[GIN] 2025/02/10 - 15:48:43 | 200 |       523.5µs |             ::1 | GET      "/api/file/17389998501824965003600.jpg"
+[GIN] 2025/02/10 - 15:48:43 | 200 |       472.2µs |             ::1 | GET      "/api/file/17389998501824965003600.jpg"
+[GIN] 2025/02/10 - 15:48:53 | 401 |            0s |             ::1 | POST     "/api/upload"
+[GIN] 2025/02/10 - 15:49:57 | 404 |            0s |             ::1 | GET      "/api/file/undefined"
+[GIN] 2025/02/10 - 15:49:57 | 200 |       517.1µs |             ::1 | GET      "/api/file/17389998501824965003600.jpg"
+[GIN] 2025/02/10 - 15:49:57 | 200 |      2.1796ms |             ::1 | GET      "/api/file/17389998501824965003600.jpg"
+[GIN] 2025/02/10 - 15:50:07 | 401 |            0s |             ::1 | POST     "/api/upload"
+[GIN-debug] [WARNING] Running in "debug" mode. Switch to "release" mode in production.
+ - using env:	export GIN_MODE=release
+ - using code:	gin.SetMode(gin.ReleaseMode)
+
+[GIN-debug] GET    /api/ping                 --> icu/internal/route.PingHandler (4 handlers)
+[GIN-debug] POST   /api/upload               --> icu/internal/controller.(*FileController).UpLoadFile-fm (5 handlers)
+[GIN-debug] GET    /api/file/:filename       --> icu/internal/controller.(*FileController).GetFile-fm (4 handlers)
+[GIN-debug] GET    /api/user/:id             --> icu/internal/controller.(*UserController).GetUser-fm (5 handlers)
+[GIN-debug] POST   /api/register             --> icu/internal/controller.(*AuthController).RegisterHandler-fm (4 handlers)
+[GIN-debug] POST   /api/login                --> icu/internal/controller.(*AuthController).LoginHandler-fm (4 handlers)
+[GIN] 2025/02/10 - 16:02:11 | 404 |      1.1174ms |             ::1 | GET      "/api/file/undefined"
+[GIN] 2025/02/10 - 16:02:12 | 200 |     65.7535ms |             ::1 | GET      "/api/file/17389998501824965003600.jpg"
+[GIN] 2025/02/10 - 16:02:12 | 200 |       188.1µs |             ::1 | GET      "/api/file/17389998501824965003600.jpg"
+[GIN] 2025/02/10 - 16:02:18 | 401 |            0s |             ::1 | POST     "/api/upload"
+[GIN] 2025/02/10 - 16:02:37 | 401 |            0s |             ::1 | POST     "/api/upload"
+[GIN] 2025/02/10 - 16:03:18 | 404 |       415.5µs |             ::1 | GET      "/api/file/undefined"
+[GIN] 2025/02/10 - 16:03:18 | 200 |      1.6176ms |             ::1 | GET      "/api/file/17389998501824965003600.jpg"
+[GIN] 2025/02/10 - 16:03:18 | 200 |       916.3µs |             ::1 | GET      "/api/file/17389998501824965003600.jpg"
+[GIN] 2025/02/10 - 16:04:56 | 401 |            0s |             ::1 | POST     "/api/upload"
+[GIN-debug] [WARNING] Running in "debug" mode. Switch to "release" mode in production.
+ - using env:	export GIN_MODE=release
+ - using code:	gin.SetMode(gin.ReleaseMode)
+
+[GIN-debug] GET    /api/ping                 --> icu/internal/route.PingHandler (4 handlers)
+[GIN-debug] POST   /api/upload               --> icu/internal/controller.(*FileController).UpLoadFile-fm (5 handlers)
+[GIN-debug] GET    /api/file/:filename       --> icu/internal/controller.(*FileController).GetFile-fm (4 handlers)
+[GIN-debug] GET    /api/user/:id             --> icu/internal/controller.(*UserController).GetUser-fm (5 handlers)
+[GIN-debug] POST   /api/register             --> icu/internal/controller.(*AuthController).RegisterHandler-fm (4 handlers)
+[GIN-debug] POST   /api/login                --> icu/internal/controller.(*AuthController).LoginHandler-fm (4 handlers)
+[GIN] 2025/02/10 - 16:07:24 | 401 |        52.6µs |             ::1 | POST     "/api/upload"
+[GIN] 2025/02/10 - 16:07:53 | 401 |            0s |             ::1 | POST     "/api/upload"
+[GIN] 2025/02/10 - 16:09:00 | 401 |            0s |             ::1 | POST     "/api/upload"
+[GIN] 2025/02/10 - 16:09:06 | 401 |       504.2µs |             ::1 | POST     "/api/upload"
+[GIN] 2025/02/10 - 16:09:33 | 401 |            0s |             ::1 | POST     "/api/upload"
+[GIN] 2025/02/10 - 16:09:37 | 401 |            0s |             ::1 | POST     "/api/upload"
+[GIN] 2025/02/10 - 16:09:47 | 401 |            0s |             ::1 | POST     "/api/upload"
+2025/02/10 16:09:52 login
+
+2025/02/10 16:09:53 D:/GolangProject/icu/internal/repository/user_repository.go:31
+[262.562ms] [rows:1] SELECT * FROM `users` WHERE username = 'zhubo1997' ORDER BY `users`.`id` LIMIT 1
+[GIN] 2025/02/10 - 16:09:53 | 200 |    337.9135ms |             ::1 | POST     "/api/login"
+[GIN] 2025/02/10 - 16:10:08 | 200 |    4.7303691s |             ::1 | POST     "/api/upload"
+[GIN] 2025/02/10 - 16:11:56 | 401 |            0s |             ::1 | POST     "/api/upload"
+[GIN] 2025/02/10 - 16:12:02 | 200 |    142.1696ms |             ::1 | GET      "/api/file/17389998501824965003600.jpg"
+[GIN] 2025/02/10 - 16:12:02 | 200 |       454.4µs |             ::1 | GET      "/api/file/17389998501824965003600.jpg"
+[GIN] 2025/02/10 - 16:12:35 | 200 |       579.7µs |             ::1 | GET      "/api/file/17389998501824965003600.jpg"
+[GIN] 2025/02/10 - 16:12:35 | 200 |       226.6µs |             ::1 | GET      "/api/file/17389998501824965003600.jpg"
+2025/02/10 16:12:43 login
+
+2025/02/10 16:12:43 D:/GolangProject/icu/internal/repository/user_repository.go:31
+[146.132ms] [rows:1] SELECT * FROM `users` WHERE username = 'zhubo1997' ORDER BY `users`.`id` LIMIT 1
+[GIN] 2025/02/10 - 16:12:43 | 200 |    263.6919ms |             ::1 | POST     "/api/login"
+[GIN] 2025/02/10 - 16:12:44 | 404 |      1.0092ms |             ::1 | GET      "/api/file/undefined"
+[GIN] 2025/02/10 - 16:12:44 | 200 |      2.1581ms |             ::1 | GET      "/api/file/17389998501824965003600.jpg"
+[GIN] 2025/02/10 - 16:12:44 | 200 |         520µs |             ::1 | GET      "/api/file/17389998501824965003600.jpg"
+[GIN] 2025/02/10 - 16:12:59 | 200 |    5.2763799s |             ::1 | POST     "/api/upload"
+[GIN] 2025/02/10 - 16:22:32 | 200 |      1.4744ms |             ::1 | GET      "/api/file/17389998501824965003600.jpg"
+[GIN] 2025/02/10 - 16:22:32 | 200 |       276.6µs |             ::1 | GET      "/api/file/17389998501824965003600.jpg"
+[GIN] 2025/02/10 - 16:22:45 | 200 |       852.7µs |             ::1 | GET      "/api/file/17389998501824965003600.jpg"
+[GIN] 2025/02/10 - 16:22:45 | 200 |       488.8µs |             ::1 | GET      "/api/file/17389998501824965003600.jpg"
+[GIN] 2025/02/10 - 16:22:55 | 200 |            0s |             ::1 | GET      "/api/file/17389998501824965003600.jpg"
+[GIN] 2025/02/10 - 16:22:55 | 200 |       216.8µs |             ::1 | GET      "/api/file/17389998501824965003600.jpg"
+[GIN] 2025/02/10 - 16:27:22 | 404 |       156.6µs |             ::1 | GET      "/api/file/undefined"
+[GIN] 2025/02/10 - 16:27:22 | 200 |       508.7µs |             ::1 | GET      "/api/file/17389998501824965003600.jpg"
+[GIN] 2025/02/10 - 16:27:22 | 200 |       698.3µs |             ::1 | GET      "/api/file/17389998501824965003600.jpg"
+[GIN] 2025/02/10 - 16:27:25 | 200 |     32.3684ms |             ::1 | POST     "/api/upload"
+[GIN] 2025/02/10 - 16:27:51 | 200 |      13.339ms |             ::1 | POST     "/api/upload"
+[GIN] 2025/02/10 - 16:29:47 | 404 |       873.3µs |             ::1 | GET      "/api/file/undefined"
+[GIN] 2025/02/10 - 16:29:47 | 200 |       507.7µs |             ::1 | GET      "/api/file/17389998501824965003600.jpg"
+[GIN] 2025/02/10 - 16:29:47 | 200 |       196.3µs |             ::1 | GET      "/api/file/17389998501824965003600.jpg"
+[GIN] 2025/02/10 - 16:30:00 | 200 |     33.1045ms |             ::1 | POST     "/api/upload"
+[GIN] 2025/02/10 - 16:30:11 | 200 |     30.6668ms |             ::1 | POST     "/api/upload"
+[GIN] 2025/02/10 - 16:30:40 | 200 |     33.6931ms |             ::1 | POST     "/api/upload"
+[GIN-debug] [WARNING] Running in "debug" mode. Switch to "release" mode in production.
+ - using env:	export GIN_MODE=release
+ - using code:	gin.SetMode(gin.ReleaseMode)
+
+[GIN-debug] GET    /api/ping                 --> icu/internal/route.PingHandler (4 handlers)
+[GIN-debug] POST   /api/upload               --> icu/internal/controller.(*FileController).UpLoadFile-fm (5 handlers)
+[GIN-debug] GET    /api/file/:filename       --> icu/internal/controller.(*FileController).GetFile-fm (4 handlers)
+[GIN-debug] GET    /api/user/:id             --> icu/internal/controller.(*UserController).GetUser-fm (5 handlers)
+[GIN-debug] POST   /api/register             --> icu/internal/controller.(*AuthController).RegisterHandler-fm (4 handlers)
+[GIN-debug] POST   /api/login                --> icu/internal/controller.(*AuthController).LoginHandler-fm (4 handlers)
+[GIN] 2025/02/10 - 16:31:45 | 404 |      3.8043ms |             ::1 | GET      "/api/file/undefined"
+[GIN] 2025/02/10 - 16:31:45 | 200 |     75.1466ms |             ::1 | GET      "/api/file/17389998501824965003600.jpg"
+[GIN] 2025/02/10 - 16:31:45 | 200 |       460.8µs |             ::1 | GET      "/api/file/17389998501824965003600.jpg"
+[GIN] 2025/02/10 - 16:32:07 | 200 |     21.6923ms |             ::1 | POST     "/api/upload"
+[GIN] 2025/02/10 - 16:38:05 | 200 |       1.033ms |             ::1 | POST     "/api/upload"
+[GIN] 2025/02/10 - 16:38:42 | 404 |            0s |             ::1 | GET      "/api/file/undefined"
+[GIN] 2025/02/10 - 16:38:42 | 200 |       505.9µs |             ::1 | GET      "/api/file/17391766852379462005647.jpg"
+[GIN] 2025/02/10 - 16:38:42 | 200 |       446.5µs |             ::1 | GET      "/api/file/17391766852379462005647.jpg"
+[GIN] 2025/02/10 - 16:38:52 | 200 |     40.7248ms |             ::1 | POST     "/api/upload"
+[GIN] 2025/02/10 - 16:40:03 | 200 |      41.642ms |             ::1 | POST     "/api/upload"
+[GIN] 2025/02/10 - 16:40:03 | 404 |            0s |             ::1 | GET      "/api/file/undefined"
+[GIN] 2025/02/10 - 16:40:03 | 200 |      4.7346ms |             ::1 | GET      "/api/file/17391768030281184002822.jpg"
+[GIN] 2025/02/10 - 16:40:03 | 200 |      8.3128ms |             ::1 | GET      "/api/file/17391768030281184002822.jpg"
+[GIN] 2025/02/10 - 16:40:12 | 200 |     28.5552ms |             ::1 | POST     "/api/upload"
+[GIN] 2025/02/10 - 16:40:12 | 404 |      1.0115ms |             ::1 | GET      "/api/file/undefined"
+[GIN] 2025/02/10 - 16:40:12 | 200 |      9.5417ms |             ::1 | GET      "/api/file/17391768121317468008230.jpg"
+[GIN] 2025/02/10 - 16:40:12 | 200 |      9.3161ms |             ::1 | GET      "/api/file/17391768121317468008230.jpg"
+[GIN] 2025/02/10 - 16:42:05 | 304 |       526.2µs |             ::1 | GET      "/api/file/17391768121317468008230.jpg"
+[GIN] 2025/02/10 - 16:42:11 | 200 |     68.2961ms |             ::1 | POST     "/api/upload"
+[GIN] 2025/02/10 - 16:42:11 | 200 |     12.0432ms |             ::1 | GET      "/api/file/17391769311866089007603.jpg"
+[GIN] 2025/02/10 - 16:44:29 | 200 |     13.2021ms |             ::1 | GET      "/api/file/17391769311866089007603.jpg"
+[GIN] 2025/02/10 - 16:44:29 | 200 |      5.0286ms |             ::1 | GET      "/api/file/17391769311866089007603.jpg"
+[GIN] 2025/02/10 - 16:44:49 | 200 |       5.837ms |             ::1 | GET      "/api/file/17391769311866089007603.jpg"
+[GIN] 2025/02/10 - 16:44:49 | 200 |      8.8873ms |             ::1 | GET      "/api/file/17391769311866089007603.jpg"
+[GIN] 2025/02/10 - 16:45:01 | 200 |      5.9076ms |             ::1 | GET      "/api/file/17391769311866089007603.jpg"
+[GIN] 2025/02/10 - 16:45:02 | 200 |      6.1954ms |             ::1 | GET      "/api/file/17391769311866089007603.jpg"
+[GIN] 2025/02/10 - 16:45:23 | 200 |      7.6282ms |             ::1 | GET      "/api/file/17391769311866089007603.jpg"
+[GIN] 2025/02/10 - 16:45:23 | 200 |      5.5844ms |             ::1 | GET      "/api/file/17391769311866089007603.jpg"
+[GIN] 2025/02/10 - 16:45:28 | 404 |       610.6µs |             ::1 | GET      "/api/file/undefined"
+[GIN] 2025/02/10 - 16:45:28 | 200 |     25.0307ms |             ::1 | GET      "/api/file/17391769311866089007603.jpg"
+[GIN] 2025/02/10 - 16:45:28 | 200 |      7.5743ms |             ::1 | GET      "/api/file/17391769311866089007603.jpg"
+[GIN] 2025/02/10 - 16:45:33 | 404 |       266.7µs |             ::1 | GET      "/api/file/undefined"
+[GIN] 2025/02/10 - 16:45:33 | 200 |     26.5772ms |             ::1 | GET      "/api/file/17391769311866089007603.jpg"
+[GIN] 2025/02/10 - 16:45:33 | 200 |      5.3826ms |             ::1 | GET      "/api/file/17391769311866089007603.jpg"
+[GIN] 2025/02/10 - 16:46:13 | 404 |            0s |             ::1 | GET      "/api/file/undefined"
+[GIN] 2025/02/10 - 16:46:13 | 404 |            0s |             ::1 | GET      "/api/file/undefined"
+[GIN] 2025/02/10 - 16:46:13 | 200 |      6.5099ms |             ::1 | GET      "/api/file/17391769311866089007603.jpg"
+[GIN] 2025/02/10 - 16:46:13 | 200 |      5.1486ms |             ::1 | GET      "/api/file/17391769311866089007603.jpg"
+[GIN] 2025/02/10 - 16:49:48 | 404 |            0s |             ::1 | GET      "/api/file/undefined"
+[GIN] 2025/02/10 - 16:49:48 | 200 |     13.4819ms |             ::1 | GET      "/api/file/17391769311866089007603.jpg"
+[GIN] 2025/02/10 - 16:49:48 | 200 |     13.7507ms |             ::1 | GET      "/api/file/17391769311866089007603.jpg"
+[GIN] 2025/02/10 - 16:49:51 | 200 |     63.4656ms |             ::1 | POST     "/api/upload"
+[GIN] 2025/02/10 - 16:50:12 | 200 |      7.8397ms |             ::1 | GET      "/api/file/17391769311866089007603.jpg"
+[GIN] 2025/02/10 - 16:50:12 | 200 |      4.1471ms |             ::1 | GET      "/api/file/17391769311866089007603.jpg"
+[GIN] 2025/02/10 - 16:50:31 | 404 |       541.7µs |             ::1 | GET      "/api/file/undefined"
+[GIN] 2025/02/10 - 16:50:31 | 200 |      9.0177ms |             ::1 | GET      "/api/file/17391773912250001005106.jpg"
+[GIN] 2025/02/10 - 16:50:31 | 200 |      9.2944ms |             ::1 | GET      "/api/file/17391773912250001005106.jpg"
+[GIN] 2025/02/10 - 16:50:46 | 404 |       749.9µs |             ::1 | GET      "/api/file/undefined"
+[GIN] 2025/02/10 - 16:50:46 | 200 |     12.4721ms |             ::1 | GET      "/api/file/17391773912250001005106.jpg"
+[GIN] 2025/02/10 - 16:50:46 | 200 |     16.3092ms |             ::1 | GET      "/api/file/17391773912250001005106.jpg"
+[GIN] 2025/02/10 - 16:50:50 | 200 |      5.0566ms |             ::1 | GET      "/api/file/17391773912250001005106.jpg"
+[GIN] 2025/02/10 - 16:50:50 | 200 |      7.0043ms |             ::1 | GET      "/api/file/17391773912250001005106.jpg"
+2025/02/10 16:50:55 login
+
+2025/02/10 16:50:55 D:/GolangProject/icu/internal/repository/user_repository.go:31
+[128.262ms] [rows:1] SELECT * FROM `users` WHERE username = 'zhubo1997' ORDER BY `users`.`id` LIMIT 1
+[GIN] 2025/02/10 - 16:50:55 | 200 |    265.5584ms |             ::1 | POST     "/api/login"
+[GIN] 2025/02/10 - 16:50:56 | 404 |       139.1µs |             ::1 | GET      "/api/file/undefined"
+[GIN] 2025/02/10 - 16:50:56 | 200 |      1.6032ms |             ::1 | GET      "/api/file/17389998501824965003600.jpg"
+[GIN] 2025/02/10 - 16:50:56 | 200 |       431.2µs |             ::1 | GET      "/api/file/17389998501824965003600.jpg"
+[GIN] 2025/02/10 - 16:51:13 | 404 |         520µs |             ::1 | GET      "/api/file/undefined"
+[GIN] 2025/02/10 - 17:08:04 | 200 |       544.1µs |             ::1 | GET      "/api/file/17389998501824965003600.jpg"
+[GIN] 2025/02/10 - 17:08:04 | 200 |       166.6µs |             ::1 | GET      "/api/file/17389998501824965003600.jpg"
+[GIN] 2025/02/10 - 17:09:25 | 200 |       515.5µs |             ::1 | GET      "/api/file/17389998501824965003600.jpg"
+[GIN] 2025/02/10 - 17:09:25 | 200 |            0s |             ::1 | GET      "/api/file/17389998501824965003600.jpg"
+[GIN] 2025/02/10 - 17:09:36 | 200 |      2.0749ms |             ::1 | POST     "/api/upload"
+[GIN] 2025/02/10 - 17:10:11 | 200 |     35.6252ms |             ::1 | POST     "/api/upload"
+[GIN] 2025/02/10 - 17:10:16 | 200 |       506.9µs |             ::1 | GET      "/api/file/17389998501824965003600.jpg"
+[GIN] 2025/02/10 - 17:10:16 | 200 |       513.1µs |             ::1 | GET      "/api/file/17389998501824965003600.jpg"
+[GIN] 2025/02/10 - 17:10:21 | 200 |       762.9µs |             ::1 | GET      "/api/file/17389998501824965003600.jpg"
+[GIN] 2025/02/10 - 17:10:21 | 200 |       269.7µs |             ::1 | GET      "/api/file/17389998501824965003600.jpg"
+[GIN] 2025/02/10 - 17:16:20 | 404 |            0s |             ::1 | GET      "/api/file/"
+[GIN] 2025/02/10 - 17:16:24 | 200 |      2.6407ms |             ::1 | GET      "/api/file/17389998501824965003600.jpg"
+[GIN] 2025/02/10 - 17:16:24 | 200 |      1.1676ms |             ::1 | GET      "/api/file/17389998501824965003600.jpg"
+[GIN] 2025/02/10 - 17:16:29 | 404 |            0s |             ::1 | GET      "/api/file/"
+[GIN] 2025/02/10 - 17:16:29 | 200 |       588.7µs |             ::1 | GET      "/api/file/17389998501824965003600.jpg"
+[GIN] 2025/02/10 - 17:16:29 | 200 |       545.8µs |             ::1 | GET      "/api/file/17389998501824965003600.jpg"
+[GIN] 2025/02/10 - 17:16:53 | 404 |            0s |             ::1 | GET      "/api/file/${avatarUrl}"
+[GIN] 2025/02/10 - 17:16:53 | 404 |            0s |             ::1 | GET      "/favicon.ico"
+[GIN] 2025/02/10 - 17:17:04 | 404 |            0s |             ::1 | GET      "/api/file/"
+[GIN] 2025/02/10 - 17:19:48 | 404 |            0s |             ::1 | GET      "/api/file/"
+[GIN] 2025/02/10 - 17:19:48 | 404 |            0s |             ::1 | GET      "/api/file/"
+[GIN] 2025/02/10 - 17:19:48 | 200 |       991.6µs |             ::1 | GET      "/api/file/17389998501824965003600.jpg"
+[GIN] 2025/02/10 - 17:19:48 | 200 |       471.8µs |             ::1 | GET      "/api/file/17389998501824965003600.jpg"
+[GIN] 2025/02/10 - 17:19:49 | 404 |            0s |             ::1 | GET      "/api/file/"
+[GIN] 2025/02/10 - 17:19:53 | 200 |     18.0936ms |             ::1 | POST     "/api/upload"
+[GIN] 2025/02/10 - 17:19:53 | 200 |       5.537ms |             ::1 | GET      "/api/file/17391791930478093003065.jpg"
+[GIN] 2025/02/10 - 17:23:06 | 404 |            0s |             ::1 | GET      "/api/file/"
+[GIN] 2025/02/10 - 17:23:06 | 404 |            0s |             ::1 | GET      "/api/file/"
+[GIN] 2025/02/10 - 17:23:07 | 200 |      2.6613ms |             ::1 | GET      "/api/file/17389998501824965003600.jpg"
+[GIN] 2025/02/10 - 17:23:07 | 200 |       216.5µs |             ::1 | GET      "/api/file/17389998501824965003600.jpg"
+[GIN] 2025/02/10 - 17:23:15 | 404 |            0s |             ::1 | GET      "/api/file/"
+[GIN] 2025/02/10 - 17:23:56 | 404 |            0s |             ::1 | GET      "/api/file/"
+[GIN] 2025/02/10 - 17:24:00 | 404 |            0s |             ::1 | GET      "/api/file/"
+[GIN] 2025/02/10 - 17:24:01 | 404 |            0s |             ::1 | GET      "/api/file/"
+2025/02/10 17:24:13 login
+
+2025/02/10 17:24:13 D:/GolangProject/icu/internal/repository/user_repository.go:31
+[104.398ms] [rows:1] SELECT * FROM `users` WHERE username = 'zhubo1997' ORDER BY `users`.`id` LIMIT 1
+[GIN] 2025/02/10 - 17:24:13 | 200 |     176.499ms |             ::1 | POST     "/api/login"
+[GIN] 2025/02/10 - 17:24:14 | 404 |            0s |             ::1 | GET      "/api/file/"
+[GIN] 2025/02/10 - 17:27:48 | 200 |      1.0244ms |             ::1 | GET      "/api/file/17389998501824965003600.jpg"
+[GIN] 2025/02/10 - 17:27:48 | 200 |      1.3487ms |             ::1 | GET      "/api/file/17389998501824965003600.jpg"
+[GIN] 2025/02/10 - 17:28:03 | 200 |     37.7228ms |             ::1 | POST     "/api/upload"
+[GIN] 2025/02/10 - 17:28:03 | 200 |      9.9138ms |             ::1 | GET      "/api/file/17391796831518567006945.jpg"
+[GIN] 2025/02/10 - 17:28:03 | 200 |     10.8069ms |             ::1 | GET      "/api/file/17391796831518567006945.jpg"
+[GIN] 2025/02/10 - 17:29:16 | 404 |            0s |             ::1 | GET      "/api/file/"
+[GIN] 2025/02/10 - 17:29:16 | 200 |       565.5µs |             ::1 | GET      "/api/file/17389998501824965003600.jpg"
+[GIN] 2025/02/10 - 17:29:16 | 200 |         615µs |             ::1 | GET      "/api/file/17389998501824965003600.jpg"
+[GIN] 2025/02/10 - 17:30:51 | 404 |            0s |             ::1 | GET      "/api/file/"
+[GIN] 2025/02/10 - 17:30:51 | 200 |      1.3383ms |             ::1 | GET      "/api/file/17389998501824965003600.jpg"
+[GIN] 2025/02/10 - 17:30:51 | 200 |       776.9µs |             ::1 | GET      "/api/file/17389998501824965003600.jpg"
+[GIN] 2025/02/10 - 17:32:06 | 200 |            0s |             ::1 | GET      "/api/file/17389998501824965003600.jpg"
+[GIN] 2025/02/10 - 17:32:06 | 200 |       970.7µs |             ::1 | GET      "/api/file/17389998501824965003600.jpg"
+[GIN] 2025/02/10 - 17:32:07 | 200 |       256.3µs |             ::1 | GET      "/api/file/17389998501824965003600.jpg"
+[GIN] 2025/02/10 - 17:32:07 | 200 |         925µs |             ::1 | GET      "/api/file/17389998501824965003600.jpg"
+[GIN] 2025/02/10 - 17:35:30 | 404 |            0s |             ::1 | GET      "/api/file/"
+[GIN] 2025/02/10 - 17:35:41 | 404 |            0s |             ::1 | GET      "/api/file/"
+[GIN] 2025/02/10 - 17:36:34 | 200 |       831.8µs |             ::1 | GET      "/api/file/17389998501824965003600.jpg"
+[GIN] 2025/02/10 - 17:36:34 | 200 |       886.4µs |             ::1 | GET      "/api/file/17389998501824965003600.jpg"
+[GIN] 2025/02/10 - 17:37:35 | 200 |      1.5133ms |             ::1 | GET      "/api/file/17389998501824965003600.jpg"
+[GIN] 2025/02/10 - 17:37:35 | 200 |       715.6µs |             ::1 | GET      "/api/file/17389998501824965003600.jpg"

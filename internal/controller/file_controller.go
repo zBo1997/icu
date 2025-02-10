@@ -27,9 +27,7 @@ func (a *FileController) UpLoadFile(c *gin.Context) {
 	// 单文件上传
 	file, err := c.FormFile("file")
 	if err != nil {
-		c.JSON(http.StatusBadRequest, gin.H{
-			"message": "无法获取文件",
-		})
+		c.JSON(http.StatusBadRequest, gin.H{"error": "参数错误"})
 		return
 	}
 
@@ -47,17 +45,12 @@ func (a *FileController) UpLoadFile(c *gin.Context) {
 
 	// 保存文件到服务器
 	if err := c.SaveUploadedFile(file, filePath); err != nil {
-		c.JSON(http.StatusInternalServerError, gin.H{
-			"message": "文件保存失败",
-		})
+		c.JSON(http.StatusInternalServerError, gin.H{"error": "文件保存失败"})
 		return
 	}
 
 	// 返回成功响应
-	c.JSON(http.StatusOK, gin.H{
-		"message":  "文件上传成功",
-		"filePath": filePath,
-	})
+	c.JSON(http.StatusOK, gin.H{"data": map[string]string{"filekey": newFileName}})
 }
 
 // generateUniqueFileName 生成全数字的唯一文件名
@@ -78,18 +71,14 @@ func (a *FileController) GetFile(c *gin.Context) {
 	// 获取请求的图片文件名
 	fileName := c.Param("filename")
 	if fileName == "" {
-		c.JSON(http.StatusBadRequest, gin.H{
-			"message": "文件名不能为空",
-		})
+		c.JSON(http.StatusBadRequest, gin.H{"error": "参数错误"})
 		return
 	}
 	filePath := filepath.Join(uploadDir, fileName)
 
 	// 检查文件是否存在
 	if _, err := os.Stat(filePath); os.IsNotExist(err) {
-		c.JSON(http.StatusNotFound, gin.H{
-			"message": "文件不存在",
-		})
+		c.JSON(http.StatusNotFound, gin.H{"error": "文件不存在"})
 		return
 	}
 
