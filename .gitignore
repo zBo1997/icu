@@ -6,3 +6,4 @@ target
 .flattened-pom.xml
 **/*.exe
 **/uploads/
+*.yml
