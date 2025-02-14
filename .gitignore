@@ -1,8 +1,7 @@
 .idea
 target
 *.iml
-/log/
-**/logs
+**/logs/
 .flattened-pom.xml
 **/*.exe
 **/uploads/
