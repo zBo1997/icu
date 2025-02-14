@@ -17,7 +17,7 @@ func NewAuthRepository() *AuthRepository {
 }
 
 // 注册
-func  (a *AuthRepository) SaveUser(userName string,password string,name string,email string)(*model.User, error) {
+func (a *AuthRepository) SaveUser(userName string, password string, name string, email string) (*model.User, error) {
 	var user model.User
 	// 哈希密码
 	hashedPassword, err := bcrypt.GenerateFromPassword([]byte(password), bcrypt.DefaultCost)
@@ -35,7 +35,7 @@ func  (a *AuthRepository) SaveUser(userName string,password string,name string,e
 		return nil, result.Error
 	}
 	// 返回成功信息
-	return  &user, nil
+	return &user, nil
 
 }
 
@@ -46,4 +46,14 @@ func (a *AuthRepository) GetUserByID(id string) (*model.User, error) {
 		return nil, err
 	}
 	return &user, nil
+}
+
+// 秀嘎用户头像
+func (a *AuthRepository) UpdateAvatar(user model.User, imgKey string) (*string, error) {
+	//根据用户编号修改avatar字段未imgkey
+	result := a.db.Model(&user).Update("avatar", imgKey)
+	if result.Error != nil {
+		return nil, result.Error
+	}
+	return &imgKey, nil
 }

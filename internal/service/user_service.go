@@ -5,7 +5,6 @@ import (
 	"icu/config"
 	"icu/internal/model"
 	"icu/internal/repository"
-	"log"
 	"time"
 
 	"github.com/gin-gonic/gin"
@@ -37,7 +36,6 @@ func (s *UserService) GetUser(id string) (*model.User, error) {
 // 登录处理函数
 func (s *UserService) Login(c *gin.Context)  (map[string]interface{}, error) {
 	var reqUser model.User
-	log.Println("login")
 	if err := c.ShouldBindJSON(&reqUser); err != nil {
 		return nil, errors.New("请求错误")
 	}
@@ -98,6 +96,25 @@ func  (s *UserService) Register(c *gin.Context) (*model.User, error) {
 	}
 	return s.authRepo.SaveUser(user.Username,user.Password,user.Name,user.Email)
 	
+}
+
+// 注册处理函数
+func  (s *UserService) UpdateAvatar(c *gin.Context) (*string , error) {
+	var user model.User
+	//获取用户ID
+	id := c.Param("userId")
+	imgKey := c.Param("imgKey")
+	//校验参数是否为空
+	if id == "" || imgKey == "" {
+		return nil,errors.New("参数错误")
+	}
+   	//获取用户信息
+	_, err := s.userRepo.GetUserByID(id)
+	//如果用户不存在//提示为空
+	if err != nil{
+		return nil,errors.New("用户不存在")
+	}
+	return s.authRepo.UpdateAvatar(user,imgKey)
 }
 
 // 私有用于生成 JWT 的函数

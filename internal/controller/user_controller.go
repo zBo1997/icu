@@ -21,7 +21,7 @@ func NewUserController() *UserController{
 
 // GetUserHandler 获取用户信息的处理函数
 func (a *UserController) GetUser(c *gin.Context) {
-	id := c.Param("id")
+	id := c.Param("userId")
 	userService := service.NewUserService()
 	user, err := userService.GetUser(id)
 	if err != nil {
@@ -32,3 +32,20 @@ func (a *UserController) GetUser(c *gin.Context) {
 	}
 	c.JSON(http.StatusOK, user)
 }
+
+//传递用户头像文件名称，更新用户头像
+func (a *UserController) UpdateAvatar(c *gin.Context) {
+	//更新用户头像
+	err := a.service.UpdateAvatar(c);
+	if err != nil {
+		c.JSON(http.StatusOK, gin.H{
+			"message": err,
+		})
+		return
+	}
+	c.JSON(http.StatusOK, gin.H{
+		"message": "用户头像更新成功",
+	})
+}
+	
+
