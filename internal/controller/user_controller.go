@@ -36,7 +36,7 @@ func (a *UserController) GetUser(c *gin.Context) {
 //传递用户头像文件名称，更新用户头像
 func (a *UserController) UpdateAvatar(c *gin.Context) {
 	//更新用户头像
-	err := a.service.UpdateAvatar(c);
+	imgKey,err := a.service.UpdateAvatar(c);
 	if err != nil {
 		c.JSON(http.StatusOK, gin.H{
 			"message": err,
@@ -44,7 +44,7 @@ func (a *UserController) UpdateAvatar(c *gin.Context) {
 		return
 	}
 	c.JSON(http.StatusOK, gin.H{
-		"message": "用户头像更新成功",
+		"data": imgKey,
 	})
 }
 	

@@ -2,7 +2,7 @@
 target
 *.iml
 /log/
-**/log/
+**/logs
 .flattened-pom.xml
 **/*.exe
 **/uploads/
