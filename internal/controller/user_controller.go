@@ -43,9 +43,7 @@ func (a *UserController) UpdateAvatar(c *gin.Context) {
 		})
 		return
 	}
-	c.JSON(http.StatusOK, gin.H{
-		"data": imgKey,
-	})
+	c.JSON(http.StatusOK, gin.H{"data": map[string]string{"imgKey": imgKey}})
 }
 	
 

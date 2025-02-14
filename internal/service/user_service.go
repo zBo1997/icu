@@ -99,20 +99,20 @@ func  (s *UserService) Register(c *gin.Context) (*model.User, error) {
 }
 
 // 注册处理函数
-func  (s *UserService) UpdateAvatar(c *gin.Context) (*string , error) {
+func  (s *UserService) UpdateAvatar(c *gin.Context) (string , error) {
 	var user model.User
 	//获取用户ID
 	id := c.Param("userId")
 	imgKey := c.Param("imgKey")
 	//校验参数是否为空
 	if id == "" || imgKey == "" {
-		return nil,errors.New("参数错误")
+		return "",errors.New("参数错误")
 	}
    	//获取用户信息
 	_, err := s.userRepo.GetUserByID(id)
 	//如果用户不存在//提示为空
 	if err != nil{
-		return nil,errors.New("用户不存在")
+		return "",errors.New("用户不存在")
 	}
 	return s.authRepo.UpdateAvatar(user,imgKey)
 }
