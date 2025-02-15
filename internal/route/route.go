@@ -19,6 +19,8 @@ func SetupRoutes(r *gin.Engine) {
 	r.GET("/api/file/:filename", fileController.GetFile)
 	// 例如：获取用户信息[校验中间件]
 	r.GET("/api/user/:id", authController.JwtMiddleware, userController.GetUser)
+	// 例如：获取用户信息[校验中间件]
+	r.POST("/api/updateAvatar", authController.JwtMiddleware, userController.UpdateAvatar)
 	// 注册 API
 	r.POST("/api/register", authController.RegisterHandler)
 	// 登录 API

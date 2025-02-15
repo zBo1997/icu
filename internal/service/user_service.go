@@ -98,23 +98,26 @@ func  (s *UserService) Register(c *gin.Context) (*model.User, error) {
 	
 }
 
-// 注册处理函数
+// 更新头像
 func  (s *UserService) UpdateAvatar(c *gin.Context) (string , error) {
-	var user model.User
-	//获取用户ID
-	id := c.Param("userId")
-	imgKey := c.Param("imgKey")
-	//校验参数是否为空
-	if id == "" || imgKey == "" {
-		return "",errors.New("参数错误")
-	}
+	var user *model.User
+    // 获取用户ID
+    id := c.PostForm("userId")
+    if id == "" {
+        return "", errors.New("用户ID不能为空")
+    }
+    // 获取文件名
+    fileName := c.PostForm("avatar")
+    if fileName == "" {
+        return "", errors.New("文件名不能为空")
+    }
    	//获取用户信息
-	_, err := s.userRepo.GetUserByID(id)
+	user, err := s.userRepo.GetUserByID(id)
 	//如果用户不存在//提示为空
 	if err != nil{
 		return "",errors.New("用户不存在")
 	}
-	return s.authRepo.UpdateAvatar(user,imgKey)
+	return s.authRepo.UpdateAvatar(user,fileName)
 }
 
 // 私有用于生成 JWT 的函数

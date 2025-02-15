@@ -38,9 +38,7 @@ func (a *UserController) UpdateAvatar(c *gin.Context) {
 	//更新用户头像
 	imgKey,err := a.service.UpdateAvatar(c);
 	if err != nil {
-		c.JSON(http.StatusOK, gin.H{
-			"message": err,
-		})
+		c.JSON(http.StatusOK, gin.H{"data": map[string]string{"error": err.Error()}})
 		return
 	}
 	c.JSON(http.StatusOK, gin.H{"data": map[string]string{"imgKey": imgKey}})

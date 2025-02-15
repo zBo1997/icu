@@ -5,4 +5,4 @@ target
 .flattened-pom.xml
 **/*.exe
 **/uploads/
-**/config/config.yml
+*.yml
