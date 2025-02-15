@@ -51,7 +51,7 @@ func (a *AuthRepository) GetUserByID(id string) (*model.User, error) {
 // 秀嘎用户头像
 func (a *AuthRepository) UpdateAvatar(user* model.User, imgKey string) (string, error) {
 	//根据用户编号修改avatar字段未imgkey
-	result := a.db.Model(&user).Update("avatar", imgKey)
+	result := a.db.Model(&user).Update("avatar", imgKey).Where("id = ?", user.ID)
 	if result.Error != nil {
 		return "", result.Error
 	}
