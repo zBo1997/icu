@@ -67,7 +67,7 @@ func generateUniqueFileName(ext string) string {
 
 func (a *FileController) GetFile(c *gin.Context) {
 	// 设置图片存放的目录
-	uploadDir := "../uploads"
+	uploadDir := "./uploads"
 	// 获取请求的图片文件名
 	fileName := c.Param("filename")
 	if fileName == "" {
