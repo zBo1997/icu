@@ -3,6 +3,7 @@ package controller
 import (
 	"fmt"
 	"icu/config"
+	"log"
 	"math/rand"
 	"net/http"
 	"os"
@@ -25,6 +26,7 @@ func NewFileController() *FileController{
 func (a *FileController) UpLoadFile(c *gin.Context) {
 	// 创建保存文件的目录（如果不存在）
 	uploadDir := config.GetKey("upload:file_path")
+	log.Println("上传路径地址："+uploadDir)
 	// 单文件上传
 	file, err := c.FormFile("file")
 	if err != nil {
