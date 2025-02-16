@@ -2,13 +2,14 @@ package controller
 
 import (
 	"fmt"
+	"icu/config"
+	"math/rand"
 	"net/http"
 	"os"
 	"path/filepath"
 	"time"
 
 	"github.com/gin-gonic/gin"
-	"golang.org/x/exp/rand"
 )
 
 // FileController 上传照片到指定的文件夹
@@ -23,7 +24,7 @@ func NewFileController() *FileController{
 // UpLoadFile 上传文件并修改为唯一的文件名
 func (a *FileController) UpLoadFile(c *gin.Context) {
 	// 创建保存文件的目录（如果不存在）
-	uploadDir := "../uploads"
+	uploadDir := config.GetKey("upload:file_path")
 	// 单文件上传
 	file, err := c.FormFile("file")
 	if err != nil {
@@ -36,7 +37,7 @@ func (a *FileController) UpLoadFile(c *gin.Context) {
 	}
 
 	// 使用当前时间戳和随机数生成唯一的文件名，保持原文件的扩展名
-	rand.Seed(uint64(time.Now().UnixNano())) // 初始化随机数种子
+	rand.Seed(time.Now().UnixNano()) // 初始化随机数种子
 	ext := filepath.Ext(file.Filename) // 获取文件的扩展名
 	newFileName := generateUniqueFileName(ext) // 生成唯一文件名
 
@@ -67,7 +68,7 @@ func generateUniqueFileName(ext string) string {
 
 func (a *FileController) GetFile(c *gin.Context) {
 	// 设置图片存放的目录
-	uploadDir := "./uploads"
+	uploadDir := config.GetKey("upload:file_path")
 	// 获取请求的图片文件名
 	fileName := c.Param("filename")
 	if fileName == "" {

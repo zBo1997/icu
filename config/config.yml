@@ -6,3 +6,5 @@ database:
   dbname: icu
 jwt:
   secret_key: "icu6984"
+upload:
+  file_path: /home/lighthouse/demo/dist/files
