@@ -25,7 +25,7 @@ func NewFileController() *FileController{
 // UpLoadFile 上传文件并修改为唯一的文件名
 func (a *FileController) UpLoadFile(c *gin.Context) {
 	// 创建保存文件的目录（如果不存在）
-	uploadDir := config.GetKey("upload:file_path")
+	uploadDir := config.GetKey("upload","file_path")
 	log.Println("上传路径地址："+uploadDir)
 	// 单文件上传
 	file, err := c.FormFile("file")
@@ -70,7 +70,7 @@ func generateUniqueFileName(ext string) string {
 
 func (a *FileController) GetFile(c *gin.Context) {
 	// 设置图片存放的目录
-	uploadDir := config.GetKey("upload:file_path")
+	uploadDir := config.GetKey("upload","file_path")
 	// 获取请求的图片文件名
 	fileName := c.Param("filename")
 	if fileName == "" {

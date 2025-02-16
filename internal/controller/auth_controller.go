@@ -57,7 +57,7 @@ func  (a *AuthController) JwtMiddleware(c *gin.Context) {
 		if token.Method != jwt.SigningMethodHS256 {
 			return nil, fmt.Errorf("invalid signing method")
 		}
-		return []byte(config.GetKey("jwt:secret_key")), nil
+		return []byte(config.GetKey("jwt","secret_key")), nil
 	})
 
 	if err != nil || !token.Valid {

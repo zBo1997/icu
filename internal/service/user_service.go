@@ -5,6 +5,7 @@ import (
 	"icu/config"
 	"icu/internal/model"
 	"icu/internal/repository"
+	"log"
 	"time"
 
 	"github.com/gin-gonic/gin"
@@ -12,7 +13,7 @@ import (
 	"golang.org/x/crypto/bcrypt"
 )
 
-var jwtKey = config.GetKey("jwt:secret_key") // 用于签发 JWT 的密钥
+var jwtKey = config.GetKey("jwt","secret_key") // 用于签发 JWT 的密钥
 
 // UserService 用于处理与用户相关的业务逻辑
 type UserService struct {
@@ -131,7 +132,7 @@ func generateJWT(username string) (string, error) {
 
 	// 使用 HMAC 签名算法生成 JWT
 	token := jwt.NewWithClaims(jwt.SigningMethodHS256, claims)
-
+	log.Println("签名"+jwtKey)
 	// 返回 token 字符串
 	return token.SignedString([]byte(jwtKey))
 }
