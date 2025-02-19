@@ -7,4 +7,4 @@ database:
 jwt:
   secret_key: icu6984
 upload:
-  file_path: /home/lighthouse/demo/dist/files
+  file_path: /home/lighthouse/files/
