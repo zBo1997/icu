@@ -1,7 +1,9 @@
 package controller
 
 import (
-	"fmt"
+	"encoding/json"
+	"icu/internal/model"
+	"log"
 	"time"
 
 	"github.com/gin-gonic/gin"
@@ -23,29 +25,69 @@ func (a *ChatController) ChatAI(c *gin.Context) {
 	c.Header("Connection", "keep-alive")
 
 	// 创建一个通道，用于向客户端推送消息
-	messageChan := make(chan string)
-
-	// 启动一个 Goroutine，定期向客户端推送消息
-	arr := []int{1, 2, 3}
-	go func() {
-		for _, _ := range arr {
-			message := fmt.Sprintf("系统消息: %s", time.Now().Format("2006-01-02 15:04:05"))
-			messageChan <- message
-			time.Sleep(2 * time.Second) // 每隔 2 秒推送一次
-		}
-	}()
+	messageChan := make(chan model.Message)
 
 	// 监听客户端断开连接
 	clientGone := c.Request.Context().Done()
+
+	// 启动一个 Goroutine，模拟生成消息
+	go func() {
+		defer close(messageChan) // 关闭通道
+
+		// 模拟多段对话
+		messages := []string{
+			"你好，我的名字叫小猪/n/n",
+			"请问？/n/n",
+			"我有什么可以帮助你的？",
+		}
+
+		for i, content := range messages {
+			select {
+			case <-clientGone:
+				log.Println("客户端断开连接，停止推送")
+				return
+			default:
+				// 构造消息
+				message := model.Message{
+					Id: 	  i + 1,
+					ConversationId: "123456",
+					Type:      "text",
+					Content:   content,
+					IsEnd:     i == len(messages)-1, // 最后一条消息标记为结束
+					Timestamp: time.Now().Format(time.RFC3339),
+				}
+				messageChan <- message
+				time.Sleep(2 * time.Second) // 模拟延迟
+			}
+		}
+	}()
+
+	// 监听消息和客户端断开事件
 	for {
 		select {
 		case <-clientGone:
-			fmt.Println("客户端断开连接")
+			log.Println("客户端断开连接")
 			return
-		case message := <-messageChan:
+		case message, ok := <-messageChan:
+			if !ok {
+				log.Println("消息通道已关闭")
+				return
+			}
+			// 将消息转换为 JSON
+			jsonMessage, err := json.Marshal(message)
+			if err != nil {
+				log.Println("JSON 编码失败:", err)
+				return
+			}
 			// 推送消息到客户端
-			c.SSEvent("message", message)
-			c.Writer.Flush() // 立即刷新响应
+			c.SSEvent("message", string(jsonMessage))
+		    c.Writer.Flush();
+
+			// 如果消息标记为结束，则关闭连接
+			if message.IsEnd {
+				log.Println("会话结束，关闭连接")
+				return
+			}
 		}
 	}
 }
