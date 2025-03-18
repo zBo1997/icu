@@ -14,8 +14,10 @@ func SetupRoutes(r *gin.Engine) {
 	chatController := controller.NewChatController()
 	// 例如：测试 API 是否正常
 	r.GET("/api/ping", PingHandler)
-	// 例如：测试 API 是否正常
-	r.GET("/api/sse", chatController.ChatAI)
+	// sse长连接
+	r.GET("/api/sse/:conversationId", chatController.ChatAI)
+	// sse长连接
+	r.POST("/api/sendMessage/", chatController.SendMessage)
 	// 上传文件
 	r.POST("/api/upload",authController.JwtMiddleware, fileController.UpLoadFile)
 	// 获取文件

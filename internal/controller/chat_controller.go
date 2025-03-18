@@ -2,14 +2,17 @@ package controller
 
 import (
 	"encoding/json"
-	"icu/internal/model"
+	"fmt"
 	"log"
+	"net/http"
 	"time"
+
+	"icu/internal/model"
 
 	"github.com/gin-gonic/gin"
 )
 
-// UserService 用于处理与用户相关的业务逻辑
+// ChatController 用于处理聊天相关的业务逻辑
 type ChatController struct {
 }
 
@@ -17,8 +20,14 @@ func NewChatController() *ChatController {
 	return &ChatController{}
 }
 
-// GetUserHandler 获取用户信息的处理函数
+// ChatAI 模拟聊天机器人的处理函数
 func (a *ChatController) ChatAI(c *gin.Context) {
+	// 获取客户端传入的对话 ID，如果没有则生成一个新的
+	conversationId := c.Query("conversationId")
+	if conversationId == "" {
+		conversationId = fmt.Sprintf("%d", time.Now().UnixNano()) // 使用时间戳生成唯一 ID
+	}
+
 	// 设置响应头
 	c.Header("Content-Type", "text/event-stream")
 	c.Header("Cache-Control", "no-cache")
@@ -36,8 +45,8 @@ func (a *ChatController) ChatAI(c *gin.Context) {
 
 		// 模拟多段对话
 		messages := []string{
-			"你好，我的名字叫小猪/n/n",
-			"请问？/n/n",
+			"你好，我的名字叫小猪",
+			"请问？",
 			"我有什么可以帮助你的？",
 		}
 
@@ -49,12 +58,12 @@ func (a *ChatController) ChatAI(c *gin.Context) {
 			default:
 				// 构造消息
 				message := model.Message{
-					Id: 	  i + 1,
-					ConversationId: "123456",
-					Type:      "text",
-					Content:   content,
-					IsEnd:     i == len(messages)-1, // 最后一条消息标记为结束
-					Timestamp: time.Now().Format(time.RFC3339),
+					Id:              i ,
+					ConversationId:  conversationId,
+					Type:            "text",
+					Content:         content,
+					IsEnd:           i == len(messages)-1, // 最后一条消息标记为结束
+					Timestamp:       time.Now().Format(time.RFC3339),
 				}
 				messageChan <- message
 				time.Sleep(2 * time.Second) // 模拟延迟
@@ -81,7 +90,7 @@ func (a *ChatController) ChatAI(c *gin.Context) {
 			}
 			// 推送消息到客户端
 			c.SSEvent("message", string(jsonMessage))
-		    c.Writer.Flush();
+			c.Writer.Flush()
 
 			// 如果消息标记为结束，则关闭连接
 			if message.IsEnd {
@@ -90,4 +99,23 @@ func (a *ChatController) ChatAI(c *gin.Context) {
 			}
 		}
 	}
+}
+
+// SendMessage 处理用户发送的消息
+func (a *ChatController) SendMessage(c *gin.Context) {
+	// 解析请求体中的消息内容
+	var request struct {
+		ConversationId string `json:"conversationId"`
+		Content        string `json:"content"`
+	}
+	if err := c.ShouldBindJSON(&request); err != nil {
+		c.JSON(http.StatusBadRequest, gin.H{"error": "Invalid request"})
+		return
+	}
+
+	// 打印用户发送的消息（实际应用中可以处理用户消息并生成响应）
+	log.Printf("Received message from conversation %s: %s", request.ConversationId, request.Content)
+
+	// 返回成功响应
+	c.JSON(http.StatusOK, gin.H{"status": "success"})
 }
