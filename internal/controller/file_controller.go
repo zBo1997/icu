@@ -68,6 +68,7 @@ func generateUniqueFileName(ext string) string {
 	return fmt.Sprintf("%d%d%s", timestamp, randomNumber, ext)
 }
 
+//获取文件路机场
 func (a *FileController) GetFile(c *gin.Context) {
 	// 设置图片存放的目录
 	uploadDir := config.GetKey("upload","file_path")
