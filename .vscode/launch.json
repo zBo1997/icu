@@ -14,7 +14,7 @@
            "args": [],
            "env": {},
            "stopOnEntry": false,
-           "trace": false,
+           "trace": "info",
            "console": "integratedTerminal"
         }
     ]
