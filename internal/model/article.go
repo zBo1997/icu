@@ -8,5 +8,7 @@ type Article struct {
 	Title    string   `json:"title"`
 	Content  string   `json:"content"`
 	UserId   string   `json:"userId"`
+	AvatarUrl string  `json:"avatarUrl"`
+	Name string   `json:"name"`
 	TagNames []string `gorm:"column:tag_names;serializer:json"`
 }

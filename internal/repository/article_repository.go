@@ -24,9 +24,10 @@ func (a *ArticleRepository) FindAriticle(offset, limit int) ([]model.Article, in
 	}
 
 	err = a.db.Table("articles").
-		Select("articles.*, JSON_ARRAYAGG(tags.tag) as tag_names").
+		Select("articles.*, JSON_ARRAYAGG(tags.tag) as tag_names,users.avatar as avatar_url,users.name").
 		Joins("LEFT JOIN article_tags ON article_tags.article_id = articles.id").
 		Joins("LEFT JOIN tags ON tags.id = article_tags.tag_id").
+		Joins("LEFT JOIN users ON users.id = articles.user_id").
 		Group("articles.id").
 		Offset(offset).
 		Limit(limit).
