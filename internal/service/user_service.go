@@ -65,7 +65,7 @@ func (s *UserService) Login(c *gin.Context)  (map[string]interface{}, error) {
 			"name":        dbUser.Name,
 			"email":       dbUser.Email,
 			"username":    dbUser.Username,
-			"create_time": dbUser.CreateTime,
+			"create_time": dbUser.CreatedAt,
 			"avatar":      dbUser.Avatar,
 			"signature":   dbUser.Signature,
 			"token":       token,

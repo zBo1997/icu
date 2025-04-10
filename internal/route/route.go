@@ -12,16 +12,19 @@ func SetupRoutes(r *gin.Engine) {
 	authController := controller.NewAuthController()
 	fileController := controller.NewFileController()
 	chatController := controller.NewChatController()
+	articleController := controller.NewArticleController()
 	// 例如：测试 API 是否正常
 	r.GET("/api/ping", PingHandler)
 	// sse长连接
 	r.GET("/api/sse/:conversationId", chatController.ChatAI)
 	// sse长连接
-	r.POST("/api/sendMessage/", chatController.SendMessage)
+	r.POST("/api/sendMessage", chatController.SendMessage)
 	// 上传文件
 	r.POST("/api/upload",authController.JwtMiddleware, fileController.UpLoadFile)
 	// 获取文件
 	r.GET("/api/file/:filename", fileController.GetFile)
+	// 文章分页列表
+	r.GET("/api/pageArticle", articleController.PageArticle)
 	// 例如：获取用户信息[校验中间件]
 	r.GET("/api/user/:id", authController.JwtMiddleware, userController.GetUser)
 	// 例如：获取用户信息[校验中间件]
