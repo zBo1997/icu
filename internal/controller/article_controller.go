@@ -45,3 +45,25 @@ func (a *ArticleController) PageArticle(c *gin.Context) {
 		"total":   total,
 	})
 }
+// GetArticleHandler 获取文章相关信息的处理函数
+func (a *ArticleController) GetArticle(c *gin.Context) {
+	articleId, err := strconv.Atoi(c.Param("articleId"))
+	if err != nil {
+		c.JSON(http.StatusBadRequest, gin.H{
+			"error": "无效的文章编号",
+		})
+		return
+	}
+
+	article, err := a.service.GetArticle(articleId)
+	if err != nil {
+		c.JSON(http.StatusInternalServerError, gin.H{
+			"error": "获取文章是吧",
+		})
+		return
+	}
+
+	c.JSON(http.StatusOK, gin.H{
+		"article": article,
+	})
+}

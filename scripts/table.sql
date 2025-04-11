@@ -9,7 +9,7 @@ create table icu.users (
 `username` varchar(255) null comment 'Username',
 `signature` varchar(255) null comment 'signature',
 `password` varchar(255) null comment 'Password',
-`create_at` datetime default CURRENT_TIMESTAMP null comment 'Create Time'
+`created_at` datetime default CURRENT_TIMESTAMP null comment 'Create Time'
 ) comment 'user';
 #文章
 create table icu.articles (
@@ -17,7 +17,7 @@ create table icu.articles (
     `title` varchar(255) null comment 'title',
     `content` TEXT null comment 'content',
     `user_id` varchar(255) null comment 'userId',
-    `create_at` datetime default CURRENT_TIMESTAMP null comment 'Create Time'
+`created_at` datetime default CURRENT_TIMESTAMP null comment 'Create Time'
 ) comment 'article';
 
 #标签表
@@ -25,7 +25,7 @@ create table icu.tags (
     `id` int auto_increment comment 'Primary Key' primary key,
     `tag` varchar(255) null comment 'tag',
     `user_id` varchar(255) null comment 'userId',
-    `create_at` datetime default CURRENT_TIMESTAMP null comment 'Create Time'
+`created_at` datetime default CURRENT_TIMESTAMP null comment 'Create Time'
 ) comment 'tags';
 
 #标签文章多对多关联表
@@ -33,11 +33,22 @@ create table icu.article_tags (
     `id` int auto_increment comment 'Primary Key' primary key,
     `article_id` int null comment 'articleId',
     `tag_id` int null comment 'tagId',
-    `create_at` datetime default CURRENT_TIMESTAMP null comment 'Create Time',
+`created_at` datetime default CURRENT_TIMESTAMP null comment 'Create Time',
     `deleted_at` datetime DEFAULT NULL null comment 'deleted_at',
     `updated_at` datetime DEFAULT NULL null comment 'updated_at'
 ) comment 'article_tags';
 
+CREATE TABLE comments (
+    `id` int auto_increment comment 'Primary Key' primary key,
+    `article_id` BIGINT NOT NULL COMMENT 'Article ID',
+    `user_id` BIGINT NOT NULL COMMENT 'User ID',
+    `comment` TEXT NOT NULL,
+    `parent_id` BIGINT DEFAULT NULL,
+    `likes_count` INT DEFAULT 0,
+    `created_at` TIMESTAMP DEFAULT CURRENT_TIMESTAMP comment 'Create Time',
+    `deleted_at` datetime DEFAULT NULL null comment 'deleted_at',
+    `updated_at` TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP comment 'updated_at'
+);
 ALTER TABLE icu.articles ADD COLUMN deleted_at DATETIME NULL;
 
 ALTER TABLE icu.tags ADD COLUMN deleted_at DATETIME NULL;

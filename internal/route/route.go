@@ -17,7 +17,7 @@ func SetupRoutes(r *gin.Engine) {
 	r.GET("/api/ping", PingHandler)
 	// sse长连接
 	r.GET("/api/sse/:conversationId", chatController.ChatAI)
-	// sse长连接
+	// sse长连接 发送消息
 	r.POST("/api/sendMessage", chatController.SendMessage)
 	// 上传文件
 	r.POST("/api/upload",authController.JwtMiddleware, fileController.UpLoadFile)
@@ -25,6 +25,8 @@ func SetupRoutes(r *gin.Engine) {
 	r.GET("/api/file/:filename", fileController.GetFile)
 	// 文章分页列表
 	r.GET("/api/pageArticle", articleController.PageArticle)
+	// 文章详情
+	r.GET("/api/article/:articleId", articleController.GetArticle)
 	// 例如：获取用户信息[校验中间件]
 	r.GET("/api/user/:id", authController.JwtMiddleware, userController.GetUser)
 	// 例如：获取用户信息[校验中间件]
