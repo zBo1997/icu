@@ -38,7 +38,7 @@ create table icu.article_tags (
     `updated_at` datetime DEFAULT NULL null comment 'updated_at'
 ) comment 'article_tags';
 
-CREATE TABLE comments (
+CREATE TABLE icu.comments ( 
     `id` int auto_increment comment 'Primary Key' primary key,
     `article_id` BIGINT NOT NULL COMMENT 'Article ID',
     `user_id` BIGINT NOT NULL COMMENT 'User ID',
@@ -61,6 +61,119 @@ ALTER TABLE icu.tags ADD COLUMN updated_at DATETIME NULL;
 
 ALTER TABLE icu.users ADD COLUMN updated_at DATETIME NULL;
 
+INSERT INTO
+    icu.comments (
+        article_id,
+        user_id,
+        comment,
+        parent_id,
+        likes_count,
+        created_at
+    )
+VALUES (
+        1,
+        1,
+        '这篇文章分析得很透彻，受益匪浅！',
+        NULL,
+        12,
+        '2025-04-15 10:00:00'
+    ),
+    (
+        1,
+        2,
+        '确实如此，尤其是对供应链的预测很有见地。',
+        1,
+        8,
+        '2025-04-15 10:05:00'
+    ),
+    (
+        1,
+        3,
+        '我觉得对特斯拉的影响可能被高估了。',
+        1,
+        5,
+        '2025-04-15 10:10:00'
+    ),
+    (
+        2,
+        2,
+        'GPT-5 的多模态能力真的太强了！',
+        NULL,
+        20,
+        '2025-04-15 11:00:00'
+    ),
+    (
+        2,
+        1,
+        '不过成本问题还是需要进一步优化。',
+        4,
+        15,
+        '2025-04-15 11:05:00'
+    ),
+    (
+        3,
+        3,
+        '劳动仲裁的流程讲解得很清楚，感谢分享！',
+        NULL,
+        10,
+        '2025-04-15 12:00:00'
+    ),
+    (
+        3,
+        1,
+        '请问模板在哪里可以下载？',
+        6,
+        3,
+        '2025-04-15 12:10:00'
+    ),
+    (
+        4,
+        2,
+        '程序员防脱发的建议很实用，已经开始尝试了！',
+        NULL,
+        25,
+        '2025-04-15 13:00:00'
+    ),
+    (
+        4,
+        3,
+        '头皮按摩真的有效吗？有科学依据吗？',
+        8,
+        7,
+        '2025-04-15 13:15:00'
+    ),
+    (
+        5,
+        1,
+        '高尿酸饮食管理的建议很详细，收藏了！',
+        NULL,
+        18,
+        '2025-04-15 14:00:00'
+    ),
+    (
+        5,
+        2,
+        '凉拌秋葵真的好吃吗？感觉有点难接受。',
+        10,
+        2,
+        '2025-04-15 14:05:00'
+    ),
+    (
+        6,
+        3,
+        '芯片战争的局势越来越复杂了。',
+        NULL,
+        30,
+        '2025-04-15 15:00:00'
+    ),
+    (
+        6,
+        1,
+        '中国的7nm工艺真的能在2025年实现吗？',
+        12,
+        10,
+        '2025-04-15 15:10:00'
+    );
 INSERT INTO
     icu.article_tags (
         id,
@@ -312,6 +425,7 @@ VALUES (
         null,
         null
     );
+
 
 INSERT INTO
     icu.articles (
@@ -673,6 +787,7 @@ VALUES (
         null
     );
 
+
 INSERT INTO
     icu.tags (
         id,
@@ -852,6 +967,7 @@ VALUES (
         null,
         null
     );
+
 
 INSERT INTO
     icu.users (

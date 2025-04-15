@@ -38,8 +38,7 @@ func (cc *CommentController) AddCommentHandler(c *gin.Context) {
 
 // GetCommentsHandler 处理获取文章评论的请求
 func (cc *CommentController) GetCommentsHandler(c *gin.Context) {
-	articleIDStr := c.Query("article_id")
-	articleID, err := strconv.ParseInt(articleIDStr, 10, 64)
+	articleID, err := strconv.Atoi(c.Param("articleId"))
 	if err != nil {
 		c.JSON(http.StatusBadRequest, gin.H{"error": "无效的文章编号"})
 		return
