@@ -22,18 +22,46 @@ func NewCommentController() *CommentController {
 
 // AddCommentHandler 处理添加评论的请求
 func (cc *CommentController) AddCommentHandler(c *gin.Context) {
-	var comment model.Comment
-	if err := c.ShouldBindJSON(&comment); err != nil {
-		c.JSON(http.StatusBadRequest, gin.H{"error": "非法请求参数"})
-		return
-	}
+    // 获取文章ID
+    articleIDStr := c.Param("articleId")
+    articleID, err := strconv.ParseInt(articleIDStr, 10, 64)
+    if err != nil {
+        c.JSON(http.StatusBadRequest, gin.H{"error": "无效的文章ID"})
+        return
+    }
 
-	if err := cc.commentService.AddComment(comment); err != nil {
-		c.JSON(http.StatusInternalServerError, gin.H{"error": "评论失败，请稍后重试"})
-		return
-	}
+    // 绑定请求体
+    var req struct {
+        Comment   string  `json:"comment"`            // 评论内容
+        ParentID  *int64  `json:"parentId,omitempty"` // 父评论ID（可选）
+        UserID    int64   `json:"userId"`             // 用户ID
+        UserName  string  `json:"name"`               // 用户名称
+    }
+    if err := c.ShouldBindJSON(&req); err != nil {
+        c.JSON(http.StatusBadRequest, gin.H{"error": "无效的请求参数"})
+        return
+    }
 
-	c.JSON(http.StatusOK, gin.H{"message": "评论成功"})
+    // 创建评论对象
+    comment := model.Comment{
+        ArticleID:  articleID,
+        UserID:     req.UserID,
+        Comment:    req.Comment,
+        ParentID:   req.ParentID,
+        LikesCount: 0, // 初始点赞数为0
+    }
+
+    // 保存评论到数据库
+    if err := cc.commentService.AddComment(&comment); err != nil {
+        c.JSON(http.StatusInternalServerError, gin.H{"error": "添加评论失败"})
+        return
+    }
+
+    // 返回成功响应
+    c.JSON(http.StatusOK, gin.H{
+        "message": "评论添加成功",
+        "comment": comment,
+    })
 }
 
 // GetCommentsHandler 处理获取文章评论的请求

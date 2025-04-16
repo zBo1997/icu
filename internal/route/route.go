@@ -30,6 +30,8 @@ func SetupRoutes(r *gin.Engine) {
 	r.GET("/api/article/:articleId", articleController.GetArticle)
 	// 根据文章获取评论
 	r.GET("/api/comments/:articleId", CommentController.GetCommentsHandler)
+	// 添加评论
+	r.POST("/api/comments/add/:articleId", CommentController.AddCommentHandler)
 	// 例如：获取用户信息[校验中间件]
 	r.GET("/api/user/:id", authController.JwtMiddleware, userController.GetUser)
 	// 例如：获取用户信息[校验中间件]

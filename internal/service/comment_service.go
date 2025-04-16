@@ -17,8 +17,8 @@ func NewCommentService() *CommentService {
 }
 
 // 添加评论
-func (c *CommentService) AddComment(comment model.Comment) error {
-	return c.commentRepo.AddComment(&comment)
+func (c *CommentService) AddComment(comment *model.Comment) error {
+	return c.commentRepo.AddComment(comment)
 }
 
 // 根据文章ID获取评论列表
