@@ -17,8 +17,17 @@ func NewCommentService() *CommentService {
 }
 
 // 添加评论
-func (c *CommentService) AddComment(comment *model.Comment) error {
-	return c.commentRepo.AddComment(comment)
+func (c *CommentService) AddComment(comment	*model.Comment) error {
+	// model 转换为评论结构体
+	 commentModel := &repository.Comment{
+	 	ArticleID:  comment.ArticleID,
+	 	UserID:     comment.UserID,
+	 	Comment:    comment.Comment,
+	 	ParentID:   comment.ParentID,
+	 	LikesCount: comment.LikesCount,
+	 }
+	
+	return c.commentRepo.AddComment(commentModel)
 }
 
 // 根据文章ID获取评论列表

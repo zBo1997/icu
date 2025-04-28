@@ -13,7 +13,8 @@ func SetupRoutes(r *gin.Engine) {
 	fileController := controller.NewFileController()
 	chatController := controller.NewChatController()
 	articleController := controller.NewArticleController()
-	CommentController := controller.NewCommentController()
+	commentController := controller.NewCommentController()
+	captchaController := controller.NewCaptchaController()
 	// 例如：测试 API 是否正常
 	r.GET("/api/ping", PingHandler)
 	// sse长连接
@@ -29,9 +30,11 @@ func SetupRoutes(r *gin.Engine) {
 	// 文章详情
 	r.GET("/api/article/:articleId", articleController.GetArticle)
 	// 根据文章获取评论
-	r.GET("/api/comments/:articleId", CommentController.GetCommentsHandler)
+	r.GET("/api/comments/:articleId", commentController.GetCommentsHandler)
 	// 添加评论
-	r.POST("/api/comments/add/:articleId", CommentController.AddCommentHandler)
+	r.POST("/api/comments/add/:articleId", commentController.AddCommentHandler)
+	// 获取验证码
+	r.GET("/api/captcha", captchaController.GetCaptchaHandler)
 	// 例如：获取用户信息[校验中间件]
 	r.GET("/api/user/:id", authController.JwtMiddleware, userController.GetUser)
 	// 例如：获取用户信息[校验中间件]

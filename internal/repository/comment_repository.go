@@ -7,6 +7,16 @@ import (
 	"gorm.io/gorm"
 )
 
+//添加评论结构体
+type Comment struct {
+	gorm.Model
+    ArticleID  int64  `json:"articleId"`           // 文章ID
+    UserID     int64  `json:"userId"`             // 用户ID
+    Comment    string `json:"comment"`             // 评论内容
+    ParentID   *int64 `json:"parentId,omitempty"` // 父评论ID（引用回复）
+    LikesCount int    `json:"likesCount"`         // 点赞数量
+}
+
 type CommentRepository struct {
 	db *gorm.DB
 }
@@ -17,7 +27,7 @@ func NewCommentRepository() *CommentRepository {
 }
 
 // AddComment 添加一条新的评论
-func (r *CommentRepository) AddComment(comment *model.Comment) error {
+func (r *CommentRepository) AddComment(comment *Comment) error {
 	return r.db.Create(comment).Error
 }
 
