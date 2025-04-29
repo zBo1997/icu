@@ -56,7 +56,25 @@ func (a *AuthController) LoginHandler(c *gin.Context) {
 
 // 注册处理函数
 func  (a *AuthController) RegisterHandler(c *gin.Context) {
-	user, err := a.userService.Register(c)
+	var reqUser model.User
+	if err := c.ShouldBindJSON(&reqUser); err != nil {
+		c.JSON(http.StatusBadRequest, gin.H{"error": "非法请求"})
+		return 
+	}
+
+	//打印请求参数 以JSON格式
+	result,_ := json.Marshal(reqUser)
+
+	log.Println("请求参数", string(result))
+
+	verify := a.captchaService.VerifyCaptcha(reqUser.CaptchaID, reqUser.CaptchaCode)
+
+	if (!verify) {
+		c.JSON(http.StatusOK, gin.H{"data": map[string]string{"error": "验证码错误"}})
+		return
+	}
+
+	user, err := a.userService.Register(&reqUser)
 	if err != nil {
 		c.JSON(http.StatusOK, gin.H{"data": map[string]string{"error": err.Error()}})
 		return

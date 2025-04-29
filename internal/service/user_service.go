@@ -18,19 +18,17 @@ var jwtKey = config.GetKey("jwt","secret_key") // 用于签发 JWT 的密钥
 // UserService 用于处理与用户相关的业务逻辑
 type UserService struct {
 	userRepo *repository.UserRepository
-	authRepo *repository.AuthRepository
 }
 
 // NewUserService 创建 UserService 实例
 func NewUserService() *UserService {
 	return &UserService{
 		userRepo: repository.NewUserRepository(),
-		authRepo: repository.NewAuthRepository(),
 	}
 }
 
 // GetUser 根据用户 ID 获取用户信息
-func (s *UserService) GetUser(id string) (*model.User, error) {
+func (s *UserService) GetUser(id string) (*repository.User, error) {
 	return s.userRepo.GetUserByID(id)
 }
 
@@ -72,32 +70,29 @@ func (s *UserService) Login(reqUser *model.User)  (map[string]interface{}, error
 
 
 // 注册处理函数
-func  (s *UserService) Register(c *gin.Context) (*model.User, error) {
-	var user model.User
-	if err := c.ShouldBindJSON(&user); err != nil {
-		return &user, errors.New("非法请求")
-	}
+func  (s *UserService) Register(user *model.User) (*repository.User, error) {
+	
 	// 检查用户是否存在
 	if user, _ := s.userRepo.UserExistByName(user.Username); user != nil {
-		return user, errors.New("用户已经存在")
+		return nil, errors.New("用户已经存在")
 	}
 
 	// 检查密码是否为空
 	if user.Password == "" {
-		return &user, errors.New("请填写密码")
+		return nil, errors.New("请填写密码")
 	}
 
 	// 检查密码是否为空
 	if user.Username == "" {
-		return &user, errors.New("请填写用户名称")
+		return nil, errors.New("请填写用户名称")
 	}
-	return s.authRepo.SaveUser(user.Username,user.Password,user.Name,user.Email)
+	return s.userRepo.SaveUser(user.Username,user.Password,user.Name,user.Email)
 	
 }
 
 // 更新头像
 func  (s *UserService) UpdateAvatar(c *gin.Context) (string , error) {
-	var user *model.User
+	var user *repository.User
     // 获取用户ID
     id := c.PostForm("userId")
     if id == "" {
@@ -114,7 +109,7 @@ func  (s *UserService) UpdateAvatar(c *gin.Context) (string , error) {
 	if err != nil{
 		return "",errors.New("用户不存在")
 	}
-	return s.authRepo.UpdateAvatar(user,fileName)
+	return s.userRepo.UpdateAvatar(user,fileName)
 }
 
 // 私有用于生成 JWT 的函数
