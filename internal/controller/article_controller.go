@@ -58,7 +58,7 @@ func (a *ArticleController) GetArticle(c *gin.Context) {
 	article, err := a.service.GetArticle(articleId)
 	if err != nil {
 		c.JSON(http.StatusInternalServerError, gin.H{
-			"error": "获取文章是吧",
+			"error": "获取文章信息失败",
 		})
 		return
 	}

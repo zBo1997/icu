@@ -35,12 +35,8 @@ func (s *UserService) GetUser(id string) (*model.User, error) {
 }
 
 // 登录处理函数
-func (s *UserService) Login(c *gin.Context)  (map[string]interface{}, error) {
-	var reqUser model.User
-	if err := c.ShouldBindJSON(&reqUser); err != nil {
-		return nil, errors.New("请求错误")
-	}
-
+func (s *UserService) Login(reqUser *model.User)  (map[string]interface{}, error) {
+	
 	// 检查用户是否存在
 	dbUser, err := s.userRepo.UserExistByName(reqUser.Username)
 	if err != nil || dbUser == nil {

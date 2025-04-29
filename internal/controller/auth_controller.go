@@ -1,9 +1,12 @@
 package controller
 
 import (
+	"encoding/json"
 	"fmt"
 	"icu/config"
+	"icu/internal/model"
 	"icu/internal/service"
+	"log"
 	"net/http"
 
 	"github.com/gin-gonic/gin"
@@ -13,17 +16,36 @@ import (
 // 用户结构体
 type AuthController struct {
 	userService *service.UserService
+	captchaService *service.CaptchaService
 }
 
 func NewAuthController() *AuthController{
 	return &AuthController{
 		userService: service.NewUserService(),
+		captchaService: service.NewCaptchaService(),
 	}
 }
 
 // 登录处理函数
 func (a *AuthController) LoginHandler(c *gin.Context) {
-	userInfo, err := a.userService.Login(c)
+	var reqUser model.User
+	if err := c.ShouldBindJSON(&reqUser); err != nil {
+		c.JSON(http.StatusBadRequest, gin.H{"error": "非法请求"})
+		return 
+	}
+	//打印请求参数 以JSON格式
+	result,_ := json.Marshal(reqUser)
+
+	log.Println("请求参数", string(result))
+
+	verify := a.captchaService.VerifyCaptcha(reqUser.CaptchaID, reqUser.CaptchaCode)
+
+	if (!verify) {
+		c.JSON(http.StatusOK, gin.H{"data": map[string]string{"error": "验证码错误"}})
+		return
+	}
+
+	userInfo, err := a.userService.Login(&reqUser)
 	if err != nil {
 		c.JSON(http.StatusOK, gin.H{"data": map[string]string{"error": err.Error()}})
 		return

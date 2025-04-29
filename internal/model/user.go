@@ -11,4 +11,6 @@ type User struct {
 	Password string `json:"password"`
 	Username string `json:"username"`
 	Signature string `json:"signature"`
+	CaptchaID string `json:"captchaID"`
+	CaptchaCode string `json:"captchaCode"`
 }
