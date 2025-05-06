@@ -9,6 +9,14 @@ type CommentService struct {
 	commentRepo *repository.CommentRepository
 }
 
+func (c *CommentService) GetCommentByID(commentID uint) (model.Comment, error) {
+	comment, err := c.commentRepo.GetCommentByID(commentID)
+	if err != nil {
+		return model.Comment{}, err
+	}
+	return comment, nil
+}
+
 // NewCommentService 创建 CommentService 实例
 func NewCommentService() *CommentService {
 	return &CommentService{
@@ -17,17 +25,23 @@ func NewCommentService() *CommentService {
 }
 
 // 添加评论
-func (c *CommentService) AddComment(comment	*model.Comment) error {
+func (c *CommentService) AddComment(comment *model.Comment) (uint, error) {
 	// model 转换为评论结构体
-	 commentModel := &repository.Comment{
-	 	ArticleID:  comment.ArticleID,
-	 	UserID:     comment.UserID,
-	 	Comment:    comment.Comment,
-	 	ParentID:   comment.ParentID,
-	 	LikesCount: comment.LikesCount,
-	 }
-	
-	return c.commentRepo.AddComment(commentModel)
+	commentModel := &repository.Comment{
+		ArticleID:  comment.ArticleID,
+		UserID:     comment.UserID,
+		Comment:    comment.Comment,
+		ParentID:   comment.ParentID,
+		LikesCount: comment.LikesCount,
+	}
+	// 调用评论仓库的添加方法
+	commentID, err := c.commentRepo.AddComment(commentModel)
+	if err != nil {
+		return 0, err
+	}
+	// 返回添加后的评论ID
+	return commentID, nil
+
 }
 
 // 根据文章ID获取评论列表

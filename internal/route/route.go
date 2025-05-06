@@ -32,7 +32,7 @@ func SetupRoutes(r *gin.Engine) {
 	// 根据文章获取评论
 	r.GET("/api/comments/:articleId", commentController.GetCommentsHandler)
 	// 添加评论
-	r.POST("/api/comments/add/:articleId", commentController.AddCommentHandler)
+	r.POST("/api/comments/add/:articleId", authController.JwtMiddleware, commentController.AddCommentHandler)
 	// 获取验证码
 	r.GET("/api/captcha", captchaController.GetCaptchaHandler)
 	// 例如：获取用户信息[校验中间件]

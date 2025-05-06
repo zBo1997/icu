@@ -5,7 +5,7 @@ import (
 	"icu/config"
 	"icu/internal/model"
 	"icu/internal/repository"
-	"log"
+	"strconv"
 	"time"
 
 	"github.com/gin-gonic/gin"
@@ -47,8 +47,8 @@ func (s *UserService) Login(reqUser *model.User)  (map[string]interface{}, error
 		return nil, errors.New("密码错误")
 	}
 
-	// 生成 JWT
-	token, err := generateJWT(dbUser.Username)
+	// 生成 JWT 使用用户Id
+	token, err := generateJWT(dbUser.ID)
 	if err != nil {
 		return nil, errors.New("登录失败")
 	}
@@ -113,17 +113,16 @@ func  (s *UserService) UpdateAvatar(c *gin.Context) (string , error) {
 }
 
 // 私有用于生成 JWT 的函数
-func generateJWT(username string) (string, error) {
+func generateJWT(userID uint) (string, error) {
 	// 创建一个 JWT token
 	expirationTime := time.Now().Add(24 * time.Hour)
 	claims := &jwt.RegisteredClaims{
-		Subject:   username,
+		Subject:   strconv.FormatUint(uint64(userID), 10), // 正确转换为十进制字符串,
 		ExpiresAt: jwt.NewNumericDate(expirationTime),
 	}
 
 	// 使用 HMAC 签名算法生成 JWT
 	token := jwt.NewWithClaims(jwt.SigningMethodHS256, claims)
-	log.Println("签名"+jwtKey)
 	// 返回 token 字符串
 	return token.SignedString([]byte(jwtKey))
 }

@@ -2,15 +2,13 @@ package controller
 
 import (
 	"encoding/json"
-	"fmt"
-	"icu/config"
 	"icu/internal/model"
 	"icu/internal/service"
+	"icu/internal/utils"
 	"log"
 	"net/http"
 
 	"github.com/gin-gonic/gin"
-	"github.com/golang-jwt/jwt/v4"
 )
 
 // 用户结构体
@@ -84,28 +82,25 @@ func  (a *AuthController) RegisterHandler(c *gin.Context) {
 }
 
 // JWT 验证中间件
-func  (a *AuthController) JwtMiddleware(c *gin.Context) {
-	tokenStr := c.GetHeader("Authorization")
-	if tokenStr == "" {
-		c.JSON(http.StatusUnauthorized, gin.H{"data": map[string]string{"error": "未登录,请登陆后再试"}})
-		c.Abort()
-		return
-	}
+func (a *AuthController) JwtMiddleware(c *gin.Context) {
+    tokenStr := c.GetHeader("Authorization")
+    if tokenStr == "" {
+        c.JSON(http.StatusUnauthorized, gin.H{"data": map[string]string{"error": "未登录,请登陆后再试"}})
+        c.Abort()
+        return
+    }
 
-	token, err := jwt.Parse(tokenStr, func(token *jwt.Token) (interface{}, error) {
-		// 检查签名方法
-		if token.Method != jwt.SigningMethodHS256 {
-			return nil, fmt.Errorf("invalid signing method")
-		}
-		return []byte(config.GetKey("jwt","secret_key")), nil
-	})
+    // 使用工具类解析 userId
+    userId, err := utils.ParseUserIDFromToken(tokenStr)
+    if err != nil {
+        c.JSON(http.StatusUnauthorized, gin.H{"data": map[string]string{"error": err.Error()}})
+        c.Abort()
+        return
+    }
 
-	if err != nil || !token.Valid {
-		c.JSON(http.StatusUnauthorized, gin.H{"data": map[string]string{"error": "未登录,请登陆后再试"}})
-		c.Abort()
-		return
-	}
+    // 将 userId 存储到上下文中 这样后续的处理函数可以直接获取
+    c.Set("userId", userId)
 
-	// 继续执行下一个请求
-	c.Next()
+    // 继续执行下一个请求
+    c.Next()
 }

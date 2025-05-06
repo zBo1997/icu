@@ -3,6 +3,7 @@ package controller
 import (
 	"icu/internal/model"
 	"icu/internal/service"
+	"icu/internal/utils"
 	"net/http"
 	"strconv"
 
@@ -22,6 +23,9 @@ func NewCommentController() *CommentController {
 
 // AddCommentHandler 处理添加评论的请求
 func (cc *CommentController) AddCommentHandler(c *gin.Context) {
+	//获取当前登录用户的ID
+	userID, err := utils.GetUserIDFromContext(c)
+
     // 获取文章ID
     articleIDStr := c.Param("articleId")
     articleID, err := strconv.ParseInt(articleIDStr, 10, 64)
@@ -45,23 +49,28 @@ func (cc *CommentController) AddCommentHandler(c *gin.Context) {
     // 创建评论对象
     comment := model.Comment{
         ArticleID:  articleID,
-        UserID:     req.UserID,
+        UserID:     userID, 
         Comment:    req.Comment,
         ParentID:   req.ParentID,
         LikesCount: 0, // 初始点赞数为0
     }
 
     // 保存评论到数据库
-    if err := cc.commentService.AddComment(&comment); err != nil {
-        c.JSON(http.StatusInternalServerError, gin.H{"error": "添加评论失败"})
-        return
-    }
-
+    commentID, err := cc.commentService.AddComment(&comment)
+	if err != nil {
+		c.JSON(http.StatusInternalServerError, gin.H{"error": "添加评论失败"})
+		return
+	}
+	//再次获取评论对象
+	commentInfo, err := cc.commentService.GetCommentByID(commentID)
+	//打印查询结果
+	
+	if err != nil {
+		c.JSON(http.StatusInternalServerError, gin.H{"error": "获取评论失败"})
+		return
+	}
     // 返回成功响应
-    c.JSON(http.StatusOK, gin.H{
-        "message": "评论添加成功",
-        "comment": comment,
-    })
+    c.JSON(http.StatusOK, gin.H{"data": commentInfo})
 }
 
 // GetCommentsHandler 处理获取文章评论的请求
@@ -78,7 +87,7 @@ func (cc *CommentController) GetCommentsHandler(c *gin.Context) {
 		return
 	}
 
-	c.JSON(http.StatusOK, gin.H{"comments": comments})
+	c.JSON(http.StatusOK, gin.H{"data": comments})
 }
 
 // DeleteCommentHandler 处理删除评论的请求

@@ -30,7 +30,7 @@ func (a *ArticleController) PageArticle(c *gin.Context) {
 	ariticles, total, err := a.service.PageArticle(page, pageSize)
 	if err != nil {
 		c.JSON(http.StatusInternalServerError, gin.H{
-			"error": "Failed to get notifications",
+			"error": "获取文章列表失败",
 		})
 		return
 	}
@@ -64,6 +64,6 @@ func (a *ArticleController) GetArticle(c *gin.Context) {
 	}
 
 	c.JSON(http.StatusOK, gin.H{
-		"article": article,
+		"data": article,
 	})
 }
