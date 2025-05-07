@@ -45,7 +45,7 @@ func (c *CommentService) AddComment(comment *model.Comment) (uint, error) {
 }
 
 // 根据文章ID获取评论列表
-func (c *CommentService) GetCommentsByArticleID(articleID int) ([]model.Comment, error) {
+func (c *CommentService) GetCommentsByArticleID(articleID int64) ([]model.Comment, error) {
 	return c.commentRepo.GetCommentsByArticleID(articleID)
 }
 

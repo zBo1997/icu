@@ -37,7 +37,7 @@ func (cc *CommentController) AddCommentHandler(c *gin.Context) {
     // 绑定请求体
     var req struct {
         Comment   string  `json:"comment"`            // 评论内容
-        ParentID  *int64  `json:"parentId,omitempty"` // 父评论ID（可选）
+        ParentID  *uint  `json:"parentId,omitempty"`  // 父评论ID（可选）
         UserID    int64   `json:"userId"`             // 用户ID
         UserName  string  `json:"name"`               // 用户名称
     }
@@ -75,7 +75,7 @@ func (cc *CommentController) AddCommentHandler(c *gin.Context) {
 
 // GetCommentsHandler 处理获取文章评论的请求
 func (cc *CommentController) GetCommentsHandler(c *gin.Context) {
-	articleID, err := strconv.Atoi(c.Param("articleId"))
+	articleID, err := strconv.ParseInt(c.Param("articleId"), 10, 64)
 	if err != nil {
 		c.JSON(http.StatusBadRequest, gin.H{"error": "无效的文章编号"})
 		return
