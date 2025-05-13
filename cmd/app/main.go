@@ -38,6 +38,7 @@ func main() {
 	r := gin.New()
 	r.Use(gin.LoggerWithWriter(logFile))
 	r.Use(gin.Recovery())
+	r.UseH2C = true
 
 	//限制文件上传的大小
 	r.MaxMultipartMemory = 8 << 20 // 8 MB

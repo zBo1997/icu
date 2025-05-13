@@ -1,7 +1,6 @@
 package service
 
 import (
-	"icu/internal/model"
 	"icu/internal/repository"
 )
 
@@ -18,6 +17,12 @@ func NewTagService() *TagService {
 }
 
 // GetUser 根据用户 ID 获取用户信息
-func (s *TagService) getTagList(id string) (*model.Tag, error) {
-	return nil, nil
+func (s *TagService) GetTagList() ([]repository.Tag, error) {
+	// 调用 TagRepository 的 GetTagList 方法
+	tagList, err := s.TagRepository.GetTagList()
+	if err != nil {
+		return nil, err
+	}
+	// 返回用户信息
+	return tagList, nil
 }
