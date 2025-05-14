@@ -7,6 +7,16 @@ import (
 	"gorm.io/gorm"
 )
 
+// Article 模型结构
+type Article struct {
+	gorm.Model
+	Title    string   `json:"title"`
+	Content  string   `json:"content"`
+	UserId   int64    `json:"userId"`
+	ImageKey string   `json:"imageKey"`
+}
+
+
 type ArticleRepository struct {
 	db *gorm.DB
 }
@@ -40,8 +50,8 @@ func (a *ArticleRepository) FindAriticle(offset, limit int) ([]model.Article, in
 }
 
 //根据文章编号获取文章信息
-func (a *ArticleRepository) GetArticle(articleId int) (model.Article, error) {
-	var article model.Article
+func (a *ArticleRepository) GetArticle(articleId int) (model.ArticleWithImage, error) {
+	var article model.ArticleWithImage
 	// 查询文章信息
 	err := a.db.Table("articles").
 		Select("articles.*, JSON_ARRAYAGG(tags.tag) as tag_names, users.avatar as avatar_url, users.name").
@@ -57,4 +67,13 @@ func (a *ArticleRepository) GetArticle(articleId int) (model.Article, error) {
 	}
 
 	return article, nil
+}
+
+//发布文章
+func (a *ArticleRepository) CreateArticle(article *Article) (uint, error) {
+	err := a.db.Create(article).Error
+	if err != nil {
+		return 0, err
+	}
+	return article.ID, nil
 }

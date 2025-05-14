@@ -2,6 +2,7 @@ package controller
 
 import (
 	"icu/internal/service"
+	"net/http"
 
 	"github.com/gin-gonic/gin"
 )
@@ -25,5 +26,5 @@ func (a *TagController) GetTagList(c *gin.Context) {
 		})
 		return
 	}
-	c.JSON(200, tagList)
+	c.JSON(http.StatusOK, gin.H{"data": tagList})
 }

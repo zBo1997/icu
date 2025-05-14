@@ -28,14 +28,19 @@ func SetupRoutes(r *gin.Engine) {
 	r.POST("/api/upload",authController.JwtMiddleware, fileController.UpLoadFile)
 	// 获取文件
 	r.GET("/api/file/:filename", fileController.GetFile)
+
 	// 文章分页列表
 	r.GET("/api/pageArticle", articleController.PageArticle)
 	// 文章详情
 	r.GET("/api/article/:articleId", articleController.GetArticle)
+	//发布文章
+	r.POST("/api/article/pulish", authController.JwtMiddleware, articleController.PublishArticle)
+
 	// 根据文章获取评论
 	r.GET("/api/comments/:articleId", commentController.GetCommentsHandler)
 	// 添加评论
 	r.POST("/api/comments/add/:articleId", authController.JwtMiddleware, commentController.AddCommentHandler)
+
 	
 	// 标签相关
 	r.GET("/api/tags", tagController.GetTagList)

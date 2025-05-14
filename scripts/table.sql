@@ -61,6 +61,8 @@ ALTER TABLE icu.tags ADD COLUMN updated_at DATETIME NULL;
 
 ALTER TABLE icu.users ADD COLUMN updated_at DATETIME NULL;
 
+ALTER TABLE icu.articles
+ADD COLUMN image_key varchar NULL after user_id;
 INSERT INTO
     icu.comments (
         article_id,

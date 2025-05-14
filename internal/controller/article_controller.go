@@ -4,7 +4,9 @@ import (
 	"net/http"
 	"strconv"
 
+	"icu/internal/model"
 	"icu/internal/service"
+	"icu/internal/utils"
 
 	"github.com/gin-gonic/gin"
 )
@@ -45,6 +47,7 @@ func (a *ArticleController) PageArticle(c *gin.Context) {
 		"total":   total,
 	})
 }
+
 // GetArticleHandler 获取文章相关信息的处理函数
 func (a *ArticleController) GetArticle(c *gin.Context) {
 	articleId, err := strconv.Atoi(c.Param("articleId"))
@@ -65,5 +68,29 @@ func (a *ArticleController) GetArticle(c *gin.Context) {
 
 	c.JSON(http.StatusOK, gin.H{
 		"data": article,
+	})
+}
+
+//发布文章
+func (a *ArticleController) PublishArticle(c *gin.Context) {
+	//获取当前登录用户的ID
+	userID, err := utils.GetUserIDFromContext(c)
+	var articleModel model.ArticlePublish
+	
+	if err := c.ShouldBindJSON(&articleModel); err != nil {
+        c.JSON(http.StatusBadRequest, gin.H{"error": "无效的请求参数"})
+        return
+    }
+
+	//获取文章编号
+	id, err := a.service.PublishArticle(&articleModel,userID)
+	if err != nil {
+		c.JSON(http.StatusInternalServerError, gin.H{
+			"error": "发布文章失败",
+		})
+		return
+	}
+	c.JSON(http.StatusOK, gin.H{
+		"data": id,
 	})
 }
