@@ -23,7 +23,7 @@ func NewArticleTagRepository() *ArticleTagRepository {
 // 保存文章和标签的关系
 func (t *ArticleTagRepository) CreateArticleTag(articleId uint, param *ArticleTag) error {
 	var tags []ArticleTag
-	err := t.db.Table("article_tags").Where("tag_id = ?", param.TagId).Find(&tags).Error
+	err := t.db.Table("tags").Where("id = ?", param.TagId).Find(&tags).Error
 	if err != nil {
 		return err
 	}
