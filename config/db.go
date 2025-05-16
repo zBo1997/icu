@@ -55,7 +55,7 @@ func InitDB(logFile *os.File) {
 	dbname := dbConfig.GetString("dbname")
 
 	// 构建 DSN（数据源名称）
-	dsn := fmt.Sprintf("%s:%s@tcp(%s:%d)/%s?charset=utf8&parseTime=True&loc=Local", username, password, host, port, dbname)
+	dsn := fmt.Sprintf("%s:%s@tcp(%s:%d)/%s?charset=utf8mb4&parseTime=True&loc=Local", username, password, host, port, dbname)
 
 	// 创建 GORM 的日志记录器
 	gormLogger := logger.New(
