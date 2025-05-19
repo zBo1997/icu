@@ -1,15 +1,17 @@
 package controller
 
 import (
+	"context"
 	"encoding/json"
 	"fmt"
 	"log"
-	"net/http"
 	"time"
 
 	"icu/internal/model"
 
 	"github.com/gin-gonic/gin"
+	"github.com/openai/openai-go"
+	"github.com/openai/openai-go/option"
 )
 
 // ChatController 用于处理聊天相关的业务逻辑
@@ -20,102 +22,82 @@ func NewChatController() *ChatController {
 	return &ChatController{}
 }
 
-// ChatAI 模拟聊天机器人的处理函数
 func (a *ChatController) ChatAI(c *gin.Context) {
-	// 获取客户端传入的对话 ID，如果没有则生成一个新的
-	conversationId := c.Query("conversationId")
-	if conversationId == "" {
-		conversationId = fmt.Sprintf("%d", time.Now().UnixNano()) // 使用时间戳生成唯一 ID
-	}
+    conversationId := c.Query("conversationId")
+    if conversationId == "" {
+        conversationId = fmt.Sprintf("%d", time.Now().UnixNano())
+    }
 
-	// 设置响应头
-	c.Header("Content-Type", "text/event-stream")
-	c.Header("Cache-Control", "no-cache")
-	c.Header("Connection", "keep-alive")
+    c.Header("Content-Type", "text/event-stream")
+    c.Header("Cache-Control", "no-cache")
+    c.Header("Connection", "keep-alive")
 
-	// 创建一个通道，用于向客户端推送消息
-	messageChan := make(chan model.Message)
+    // 获取用户问题（从 query 参数）
+    question := c.Query("content")
+    if question == "" {
+        question = "你好，你是ICU的AI助手，请问有什么可以帮助你的吗？"
+    }
 
-	// 监听客户端断开连接
-	clientGone := c.Request.Context().Done()
+    // 初始化 openai 客户端
+    client := openai.NewClient(
+        option.WithAPIKey("sk-04e1168b173d41cfb356157544a6fee7"),
+        option.WithBaseURL("https://api.deepseek.com"),
+    )
 
-	// 启动一个 Goroutine，模拟生成消息
-	go func() {
-		defer close(messageChan) // 关闭通道
+    stream := client.Chat.Completions.NewStreaming(context.TODO(), openai.ChatCompletionNewParams{
+        Messages: []openai.ChatCompletionMessageParamUnion{
+            openai.UserMessage(question),
+        },
+        Model: "deepseek-chat",
+    })
 
-		// 模拟多段对话
-		messages := []string{
-			"你好，我的名字叫小猪",
-			"请问？",
-			"我有什么可以帮助你的？",
-		}
+    acc := openai.ChatCompletionAccumulator{}
+    clientGone := c.Request.Context().Done()
 
-		for i, content := range messages {
-			select {
-			case <-clientGone:
-				log.Println("客户端断开连接，停止推送")
-				return
-			default:
-				// 构造消息
-				message := model.Message{
-					Id:              i ,
-					ConversationId:  conversationId,
-					Type:            "text",
-					Content:         content,
-					IsEnd:           i == len(messages)-1, // 最后一条消息标记为结束
-					Timestamp:       time.Now().Format(time.RFC3339),
-				}
-				messageChan <- message
-				time.Sleep(2 * time.Second) // 模拟延迟
-			}
-		}
-	}()
+    // 流式推送AI回复
+    go func() {
+        defer stream.Close()
+        for stream.Next() {
+            select {
+            case <-clientGone:
+                log.Println("客户端断开连接，停止推送")
+                return
+            default:
+                chunk := stream.Current()
+                acc.AddChunk(chunk)
+                var content string
+                if len(acc.Choices) > 0 {
+                    content = acc.Choices[0].Message.Content
+                }
+                message := model.Message{
+                    Id:             time.Now().UnixNano(),
+                    ConversationId: conversationId,
+                    Type:           "text",
+                    Content:        content,
+                    IsEnd:          false,
+                    Timestamp:      time.Now().Format(time.RFC3339),
+                    Sender:         "system",
+                }
+                jsonMessage, _ := json.Marshal(message)
+                c.SSEvent("message", string(jsonMessage))
+                c.Writer.Flush()
+            }
+        }
+        // 结束消息
+        message := model.Message{
+            Id:             time.Now().UnixNano(),
+            ConversationId: conversationId,
+            Type:           "text",
+            Content:        acc.Choices[0].Message.Content,
+            IsEnd:          true,
+            Timestamp:      time.Now().Format(time.RFC3339),
+            Sender:         "system",
+        }
+        jsonMessage, _ := json.Marshal(message)
+        c.SSEvent("message", string(jsonMessage))
+        c.Writer.Flush()
+    }()
 
-	// 监听消息和客户端断开事件
-	for {
-		select {
-		case <-clientGone:
-			log.Println("客户端断开连接")
-			return
-		case message, ok := <-messageChan:
-			if !ok {
-				log.Println("消息通道已关闭")
-				return
-			}
-			// 将消息转换为 JSON
-			jsonMessage, err := json.Marshal(message)
-			if err != nil {
-				log.Println("JSON 编码失败:", err)
-				return
-			}
-			// 推送消息到客户端
-			c.SSEvent("message", string(jsonMessage))
-			c.Writer.Flush()
-
-			// 如果消息标记为结束，则关闭连接
-			if message.IsEnd {
-				log.Println("会话结束，关闭连接")
-				return
-			}
-		}
-	}
-}
-
-// SendMessage 处理用户发送的消息
-func (a *ChatController) SendMessage(c *gin.Context) {
-	// 解析请求体中的消息内容
-	var request struct {
-		ConversationId string `json:"conversationId"`
-		Content        string `json:"content"`
-	}
-	if err := c.ShouldBindJSON(&request); err != nil {
-		c.JSON(http.StatusBadRequest, gin.H{"error": "Invalid request"})
-		return
-	}
-
-	// 打印用户发送的消息（实际应用中可以处理用户消息并生成响应）
-	log.Printf("Received message from conversation %s: %s", request.ConversationId, request.Content)
-
-	// 返回成功响应
-	c.JSON(http.StatusOK, gin.H{"status": "success"})
+    <-clientGone
+    log.Println("客户端断开连接")
 }

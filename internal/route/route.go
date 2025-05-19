@@ -19,9 +19,7 @@ func SetupRoutes(r *gin.Engine) {
 	// 例如：测试 API 是否正常
 	r.GET("/api/ping", PingHandler)
 	// sse长连接
-	r.GET("/api/sse/:conversationId", chatController.ChatAI)
-	// sse长连接 发送消息
-	r.POST("/api/sendMessage", chatController.SendMessage)
+	r.GET("/api/sse", chatController.ChatAI)
 	
 	
 	// 上传文件
