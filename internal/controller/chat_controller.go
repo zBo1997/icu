@@ -53,6 +53,7 @@ func (a *ChatController) ChatAI(c *gin.Context) {
 
     acc := openai.ChatCompletionAccumulator{}
     clientGone := c.Request.Context().Done()
+    aiMessageId := time.Now().UnixNano() // 生成AI消息唯一id
 
     // 流式推送AI回复
     go func() {
@@ -70,7 +71,7 @@ func (a *ChatController) ChatAI(c *gin.Context) {
                     content = acc.Choices[0].Message.Content
                 }
                 message := model.Message{
-                    Id:             time.Now().UnixNano(),
+                    Id:             aiMessageId, // 始终用同一个id
                     ConversationId: conversationId,
                     Type:           "text",
                     Content:        content,
@@ -85,7 +86,7 @@ func (a *ChatController) ChatAI(c *gin.Context) {
         }
         // 结束消息
         message := model.Message{
-            Id:             time.Now().UnixNano(),
+            Id:             aiMessageId, // 结束消息也用同一个id
             ConversationId: conversationId,
             Type:           "text",
             Content:        acc.Choices[0].Message.Content,
