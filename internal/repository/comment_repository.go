@@ -29,7 +29,7 @@ func NewCommentRepository() *CommentRepository {
 }
 
 
-//查询单挑评论
+//查询单条评论
 func (r *CommentRepository) GetCommentByID(commentID uint) (model.Comment, error) {
 	var comment model.Comment
 
