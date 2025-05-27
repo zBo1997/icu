@@ -63,6 +63,8 @@ ALTER TABLE icu.users ADD COLUMN updated_at DATETIME NULL;
 
 ALTER TABLE icu.articles
 ADD COLUMN image_key VARCHAR(255) NULL after user_id;
+ALTER TABLE icu.comments
+ADD COLUMN reply_to_user_id BIGINT DEFAULT NULL COMMENT '被回复的用户ID' AFTER parent_id;
 INSERT INTO
     icu.comments (
         article_id,

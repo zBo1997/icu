@@ -38,7 +38,8 @@ func SetupRoutes(r *gin.Engine) {
 	r.GET("/api/comments/:articleId", commentController.GetCommentsHandler)
 	// 添加评论
 	r.POST("/api/comments/add/:articleId", authController.JwtMiddleware, commentController.AddCommentHandler)
-
+	// 删除评论
+	r.DELETE("/api/comments/delete/:commentId", authController.JwtMiddleware, commentController.DeleteCommentHandler)
 	
 	// 标签相关
 	r.GET("/api/tags", tagController.GetTagList)

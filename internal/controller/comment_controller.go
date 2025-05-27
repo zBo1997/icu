@@ -39,6 +39,7 @@ func (cc *CommentController) AddCommentHandler(c *gin.Context) {
         Comment   string  `json:"comment"`            // 评论内容
         ParentID  *uint  `json:"parentId,omitempty"`  // 父评论ID（可选）
         UserID    int64   `json:"userId"`             // 用户ID
+		ReplyToUserId    *uint   `json:"replyToUserId"`             // 用户ID
         UserName  string  `json:"name"`               // 用户名称
     }
     if err := c.ShouldBindJSON(&req); err != nil {
@@ -52,6 +53,7 @@ func (cc *CommentController) AddCommentHandler(c *gin.Context) {
         UserID:     userID, 
         Comment:    req.Comment,
         ParentID:   req.ParentID,
+		ReplyToUserId: req.ReplyToUserId, // 回复的用户ID
         LikesCount: 0, // 初始点赞数为0
     }
 
@@ -87,12 +89,12 @@ func (cc *CommentController) GetCommentsHandler(c *gin.Context) {
 		return
 	}
 
-	c.JSON(http.StatusOK, gin.H{"data": comments})
+	c.JSON(http.StatusOK, gin.H{"data": &comments})
 }
 
 // DeleteCommentHandler 处理删除评论的请求
 func (cc *CommentController) DeleteCommentHandler(c *gin.Context) {
-	commentIDStr := c.Param("id")
+	commentIDStr := c.Param("commentId")
 	commentID, err := strconv.ParseInt(commentIDStr, 10, 64)
 	if err != nil {
 		c.JSON(http.StatusBadRequest, gin.H{"error": "Invalid comment ID"})

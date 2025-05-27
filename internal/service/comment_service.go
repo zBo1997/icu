@@ -32,6 +32,7 @@ func (c *CommentService) AddComment(comment *model.Comment) (uint, error) {
 		UserID:     comment.UserID,
 		Comment:    comment.Comment,
 		ParentID:   comment.ParentID,
+		ReplyToUserId: comment.ReplyToUserId, // 回复的用户ID
 		LikesCount: comment.LikesCount,
 	}
 	// 调用评论仓库的添加方法
@@ -45,7 +46,7 @@ func (c *CommentService) AddComment(comment *model.Comment) (uint, error) {
 }
 
 // 根据文章ID获取评论列表
-func (c *CommentService) GetCommentsByArticleID(articleID int64) ([]model.Comment, error) {
+func (c *CommentService) GetCommentsByArticleID(articleID int64) ([]*model.Comment, error) {
 	return c.commentRepo.GetCommentsByArticleID(articleID)
 }
 
