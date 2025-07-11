@@ -20,6 +20,8 @@ func SetupRoutes(r *gin.Engine) {
 	r.GET("/api/ping", PingHandler)
 	// sse长连接
 	r.GET("/api/sse", chatController.ChatAI)
+	// 生成会话Id
+	r.GET("/api/generateConversationId", chatController.GenerateConversationID)
 	
 	
 	// 上传文件

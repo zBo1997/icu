@@ -5,9 +5,8 @@ import (
 	"encoding/json"
 	"fmt"
 	"log"
+	"net/http"
 	"time"
-
-	"icu/internal/model"
 
 	"github.com/gin-gonic/gin"
 	"github.com/openai/openai-go"
@@ -20,6 +19,15 @@ type ChatController struct {
 
 func NewChatController() *ChatController {
 	return &ChatController{}
+}
+
+//生成conversationId的接口
+func (a *ChatController) GenerateConversationID(c *gin.Context) {
+    conversationId := fmt.Sprintf("%d", time.Now().UnixNano())
+    // 返回 JSON
+       c.JSON(http.StatusOK, gin.H{"data": map[string]string{
+        "conversationId":    conversationId,
+    }})
 }
 
 func (a *ChatController) ChatAI(c *gin.Context) {
@@ -40,63 +48,48 @@ func (a *ChatController) ChatAI(c *gin.Context) {
 
     // 初始化 openai 客户端
     client := openai.NewClient(
-        option.WithAPIKey("sk-04e1168b173d41cfb356157544a6fee7"),
+        option.WithAPIKey("sk-0090294ca0a3465d9d854385447f455a"),
         option.WithBaseURL("https://api.deepseek.com"),
     )
 
     stream := client.Chat.Completions.NewStreaming(context.TODO(), openai.ChatCompletionNewParams{
-        Messages: []openai.ChatCompletionMessageParamUnion{
+    Messages: []openai.ChatCompletionMessageParamUnion{
             openai.UserMessage(question),
         },
         Model: "deepseek-chat",
     })
 
-    acc := openai.ChatCompletionAccumulator{}
+    //acc := openai.ChatCompletionAccumulator{}
     clientGone := c.Request.Context().Done()
-    aiMessageId := time.Now().UnixNano() // 生成AI消息唯一id
-
+    // 增加id
+    id := 1
     // 流式推送AI回复
     go func() {
-        defer stream.Close()
-        for stream.Next() {
-            select {
-            case <-clientGone:
-                log.Println("客户端断开连接，停止推送")
-                return
-            default:
-                chunk := stream.Current()
-                acc.AddChunk(chunk)
-                var content string
-                if len(acc.Choices) > 0 {
-                    content = acc.Choices[0].Message.Content
-                }
-                message := model.Message{
-                    Id:             aiMessageId, // 始终用同一个id
-                    ConversationId: conversationId,
-                    Type:           "text",
-                    Content:        content,
-                    IsEnd:          false,
-                    Timestamp:      time.Now().Format(time.RFC3339),
-                    Sender:         "system",
-                }
-                jsonMessage, _ := json.Marshal(message)
-                c.SSEvent("message", string(jsonMessage))
-                c.Writer.Flush()
+     defer stream.Close()
+    for stream.Next() {
+        select {
+        case <-clientGone:
+            log.Println("客户端断开连接，停止推送")
+            return
+        default:
+            chunk := stream.Current()
+            // 封装会话ID和内容
+            data := map[string]interface{}{
+                "conversationId": conversationId,
+                "content":        chunk.Choices[0].Delta.Content,
+                "sender":         "system",
             }
+            log.Printf("Received chunk: %+v", data)
+            jsonBytes, _ := json.Marshal(data)
+            fmt.Fprintf(c.Writer, "id: %d\n", id)
+            fmt.Fprintf(c.Writer, "event: message\n")
+            fmt.Fprintf(c.Writer, "data: %s\n\n", jsonBytes)
+            //增加一个全局的Id
+            c.Writer.Flush()
+            id++
         }
-        // 结束消息
-        message := model.Message{
-            Id:             aiMessageId, // 结束消息也用同一个id
-            ConversationId: conversationId,
-            Type:           "text",
-            Content:        acc.Choices[0].Message.Content,
-            IsEnd:          true,
-            Timestamp:      time.Now().Format(time.RFC3339),
-            Sender:         "system",
-        }
-        jsonMessage, _ := json.Marshal(message)
-        c.SSEvent("message", string(jsonMessage))
-        c.Writer.Flush()
+    }
+    c.Writer.Flush()
     }()
 
     <-clientGone
