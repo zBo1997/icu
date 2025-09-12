@@ -9,7 +9,10 @@ require (
 	gorm.io/gorm v1.25.12
 )
 
-require github.com/openai/openai-go v0.1.0-beta.10
+require (
+	github.com/openai/openai-go v0.1.0-beta.10
+	golang.org/x/exp v0.0.0-20250911091902-df9299821621
+)
 
 require (
 	github.com/go-viper/mapstructure/v2 v2.2.1 // indirect

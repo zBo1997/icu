@@ -8,8 +8,8 @@ import (
 
 type ArticleTag struct {
 	gorm.Model
-	ArticleId uint `json:"articleId"`
-	TagId     uint `json:"tagId"`
+	ArticleId uint64 `json:"articleId"`
+	TagId     uint64 `json:"tagId"`
 }
 
 type ArticleTagRepository struct {
@@ -20,8 +20,34 @@ func NewArticleTagRepository() *ArticleTagRepository {
 	return &ArticleTagRepository{db: config.GetDB()}
 }
 
+func (r *ArticleTagRepository) FindTagMapByArticleIds(articleIds []uint64) (map[uint64][]Tag, error) {
+	res := make(map[uint64][]Tag, len(articleIds))
+	if len(articleIds) == 0 {
+		return res, nil
+	}
+	var rows []struct {
+		ArticleId uint64
+		Tag
+	}
+	err := r.db.
+		Model(&ArticleTag{}).
+		Select("article_tags.article_id, tags.id, tags.tag").
+		Joins("JOIN tags ON tags.id = article_tags.tag_id").
+		Where("article_tags.article_id IN ?", articleIds).
+		Order("article_tags.article_id, tags.id").
+		Scan(&rows).Error
+	if err != nil {
+		return nil, err
+	}
+
+	for _, r := range rows {
+		res[r.ArticleId] = append(res[r.ArticleId], r.Tag)
+	}
+	return res, nil
+}
+
 // 保存文章和标签的关系
-func (t *ArticleTagRepository) CreateArticleTag(articleId uint, param *ArticleTag) error {
+func (t *ArticleTagRepository) CreateArticleTag(articleId uint64, param *ArticleTag) error {
 	var tags []ArticleTag
 	err := t.db.Table("tags").Where("id = ?", param.TagId).Find(&tags).Error
 	if err != nil {

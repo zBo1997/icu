@@ -4,6 +4,6 @@ package model
 type ArticlePublish struct {
 	Title    string `json:"title"`
 	Content  string `json:"content"`
-	Tags     uint   `json:"tags"`
+	Tags     uint64 `json:"tags"`
 	ImageKey string `json:"imageKey"`
 }

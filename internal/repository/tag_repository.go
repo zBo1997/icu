@@ -8,8 +8,8 @@ import (
 
 type Tag struct {
 	gorm.Model
-	Tag    string `json:"title"`
-	UserId int64 `json:"userId"`
+	Tag    string `json:"tag"`
+	UserId int64  `json:"userId"`
 }
 
 type TagRepository struct {

@@ -7,17 +7,16 @@ import (
 	"gorm.io/gorm"
 )
 
-//添加评论结构体
+// 添加评论结构体
 type User struct {
 	gorm.Model
-	Name  string `json:"name"`
-	Avatar  string `json:"avatar"`
-	Email string `json:"email"`
-	Password string `json:"password"`
-	Username string `json:"username"`
+	Name      string `json:"name"`
+	Avatar    string `json:"avatar"`
+	Email     string `json:"email"`
+	Password  string `json:"password"`
+	Username  string `json:"username"`
 	Signature string `json:"signature"`
 }
-
 
 type UserRepository struct {
 	db *gorm.DB
@@ -25,6 +24,22 @@ type UserRepository struct {
 
 func NewUserRepository() *UserRepository {
 	return &UserRepository{db: config.GetDB()}
+}
+
+// repository/user_repository.go
+func (r *UserRepository) FindMapByIds(ids []uint64) (map[uint64]User, error) {
+	m := make(map[uint64]User, len(ids))
+	if len(ids) == 0 {
+		return m, nil
+	}
+	var users []User
+	if err := r.db.Where("id IN ?", ids).Find(&users).Error; err != nil {
+		return nil, err
+	}
+	for _, u := range users {
+		m[uint64(u.ID)] = u
+	}
+	return m, nil
 }
 
 // GetUserByID 根据 ID 获取用户信息
@@ -68,7 +83,6 @@ func (a *UserRepository) SaveUser(userName string, password string, name string,
 	return &user, nil
 
 }
-
 
 // 修改用户头像
 func (a *UserRepository) UpdateAvatar(user *User, imgKey string) (string, error) {

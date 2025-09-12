@@ -26,39 +26,39 @@ func (cc *CommentController) AddCommentHandler(c *gin.Context) {
 	//获取当前登录用户的ID
 	userID, err := utils.GetUserIDFromContext(c)
 
-    // 获取文章ID
-    articleIDStr := c.Param("articleId")
-    articleID, err := strconv.ParseInt(articleIDStr, 10, 64)
-    if err != nil {
-        c.JSON(http.StatusBadRequest, gin.H{"error": "无效的文章ID"})
-        return
-    }
+	// 获取文章ID
+	articleIDStr := c.Param("articleId")
+	articleID, err := strconv.ParseUint(articleIDStr, 10, 64)
+	if err != nil {
+		c.JSON(http.StatusBadRequest, gin.H{"error": "无效的文章ID"})
+		return
+	}
 
-    // 绑定请求体
-    var req struct {
-        Comment   string  `json:"comment"`            // 评论内容
-        ParentID  *uint  `json:"parentId,omitempty"`  // 父评论ID（可选）
-        UserID    int64   `json:"userId"`             // 用户ID
-		ReplyToUserId    *uint   `json:"replyToUserId"`             // 用户ID
-        UserName  string  `json:"name"`               // 用户名称
-    }
-    if err := c.ShouldBindJSON(&req); err != nil {
-        c.JSON(http.StatusBadRequest, gin.H{"error": "无效的请求参数"})
-        return
-    }
+	// 绑定请求体
+	var req struct {
+		Comment       string  `json:"comment"`            // 评论内容
+		ParentID      *uint64 `json:"parentId,omitempty"` // 父评论ID（可选）
+		UserID        uint64  `json:"userId"`             // 用户ID
+		ReplyToUserId *uint64 `json:"replyToUserId"`      // 用户ID
+		UserName      string  `json:"name"`               // 用户名称
+	}
+	if err := c.ShouldBindJSON(&req); err != nil {
+		c.JSON(http.StatusBadRequest, gin.H{"error": "无效的请求参数"})
+		return
+	}
 
-    // 创建评论对象
-    comment := model.Comment{
-        ArticleID:  articleID,
-        UserID:     userID, 
-        Comment:    req.Comment,
-        ParentID:   req.ParentID,
+	// 创建评论对象
+	comment := model.Comment{
+		ArticleID:     articleID,
+		UserID:        userID,
+		Comment:       req.Comment,
+		ParentID:      req.ParentID,
 		ReplyToUserId: req.ReplyToUserId, // 回复的用户ID
-        LikesCount: 0, // 初始点赞数为0
-    }
+		LikesCount:    0,                 // 初始点赞数为0
+	}
 
-    // 保存评论到数据库
-    commentID, err := cc.commentService.AddComment(&comment)
+	// 保存评论到数据库
+	commentID, err := cc.commentService.AddComment(&comment)
 	if err != nil {
 		c.JSON(http.StatusInternalServerError, gin.H{"error": "添加评论失败"})
 		return
@@ -66,13 +66,13 @@ func (cc *CommentController) AddCommentHandler(c *gin.Context) {
 	//再次获取评论对象
 	commentInfo, err := cc.commentService.GetCommentByID(commentID)
 	//打印查询结果
-	
+
 	if err != nil {
 		c.JSON(http.StatusInternalServerError, gin.H{"error": "获取评论失败"})
 		return
 	}
-    // 返回成功响应
-    c.JSON(http.StatusOK, gin.H{"data": commentInfo})
+	// 返回成功响应
+	c.JSON(http.StatusOK, gin.H{"data": commentInfo})
 }
 
 // GetCommentsHandler 处理获取文章评论的请求
