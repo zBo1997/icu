@@ -2,7 +2,6 @@ package repository
 
 import (
 	"icu/config"
-	"icu/internal/model"
 
 	"gorm.io/gorm"
 )
@@ -44,14 +43,11 @@ func (a *ArticleRepository) FindArticle(offset, limit int) ([]Article, int64, er
 }
 
 // 根据文章编号获取文章信息
-func (a *ArticleRepository) GetArticle(articleId int) (model.ArticleWithImage, error) {
-	var article model.ArticleWithImage
+func (a *ArticleRepository) GetArticle(articleId int) (Article, error) {
+	var article Article
 	// 查询文章信息
 	err := a.db.Table("articles").
-		Select("articles.*, JSON_ARRAYAGG(tags.tag) as tag_names, users.avatar as avatar_url, users.name").
-		Joins("LEFT JOIN article_tags ON article_tags.article_id = articles.id").
-		Joins("LEFT JOIN tags ON tags.id = article_tags.tag_id").
-		Joins("LEFT JOIN users ON users.id = articles.user_id").
+		Select("articles.*").
 		Where("articles.id = ?", articleId).
 		Group("articles.id").
 		First(&article).Error

@@ -4,6 +4,8 @@ import (
 	"icu/config"
 	"icu/internal/model"
 	"icu/internal/repository"
+	"strconv"
+	"sync"
 )
 
 // UserService 用于处理与用户相关的业务逻辑
@@ -33,24 +35,10 @@ func (a *ArticleService) PageArticle(page, pageSize int) ([]model.Article, int64
 	if err != nil {
 		return modelArticles, 0, err
 	}
-	if len(articles) == 0 {
-		return []model.Article{}, total, nil
+	users, articleTags, imageMap, err := a.assembleArticleExtraInfo(articles)
+	if err != nil {
+		return modelArticles, 0, err
 	}
-	userIdMap := make(map[uint64]struct{})
-	articleIds := make([]uint64, 0, len(articles))
-	for _, v := range articles {
-		if v.UserId != 0 {
-			userIdMap[v.UserId] = struct{}{}
-		}
-		articleIds = append(articleIds, uint64(v.ID))
-	}
-	userIds := make([]uint64, 0)
-	for id := range userIdMap {
-		userIds = append(userIds, id)
-	}
-	users, err := a.userRepository.FindMapByIds(userIds)
-	articleTags, err := a.articleTagRepository.FindTagMapByArticleIds(articleIds)
-	imageMap, err := a.articleImageRepo.FindMapByArticleIds(articleIds)
 	//把Article转换为model.Article
 	for _, article := range articles {
 		user := users[article.UserId]
@@ -60,9 +48,17 @@ func (a *ArticleService) PageArticle(page, pageSize int) ([]model.Article, int64
 		for i, t := range tags {
 			names[i] = t.Tag
 		}
-		keys := make([]string, len(images))
+		keys := make([]model.ArticleWithImage, len(images))
 		for i, img := range images {
-			keys[i] = img.ImageKey
+			keys[i] = model.ArticleWithImage{
+				ID:        uint64(img.ID),
+				ArticleID: img.ArticleID,
+				Caption:   img.Caption,
+				ImageKey:  img.ImageKey,
+				SortOrder: img.SortOrder,
+				CreatedAt: img.CreatedAt,
+				UpdatedAt: img.UpdatedAt,
+			}
 		}
 		modelArticle := model.Article{
 			ID:        uint64(article.ID),
@@ -73,6 +69,8 @@ func (a *ArticleService) PageArticle(page, pageSize int) ([]model.Article, int64
 			TagNames:  names,
 			UserId:    uint64(user.ID),
 			ImageKeys: keys,
+			CreatedAt: article.CreatedAt,
+			UpdatedAt: article.UpdatedAt,
 		}
 		modelArticles = append(modelArticles, modelArticle)
 	}
@@ -80,9 +78,37 @@ func (a *ArticleService) PageArticle(page, pageSize int) ([]model.Article, int64
 }
 
 // 根据文章编号获取文章信息
-func (a *ArticleService) GetArticle(articleId int) (model.ArticleWithImage, error) {
+func (a *ArticleService) GetArticle(articleId int) (model.Article, error) {
+	var modelArticle model.Article
 	//查询文章信息
-	return a.articleRepo.GetArticle(articleId)
+	article, err := a.articleRepo.GetArticle(articleId)
+	if err != nil {
+		return model.Article{}, err
+	}
+	user, err := a.userRepository.GetUserByID(strconv.FormatUint(article.UserId, 10))
+	if err != nil {
+		return model.Article{}, err
+	}
+	tags, err := a.articleTagRepository.FindTagsByArticleId(uint64(article.ID))
+	if err != nil {
+		return model.Article{}, err
+	}
+	names := make([]string, len(tags))
+	for i, t := range tags {
+		names[i] = t.Tag
+	}
+	modelArticle = model.Article{
+		ID:        uint64(article.ID),
+		Title:     article.Title,
+		Content:   article.Content,
+		Name:      user.Name,
+		AvatarUrl: user.Avatar,
+		TagNames:  names,
+		UserId:    uint64(user.ID),
+		CreatedAt: article.CreatedAt,
+		UpdatedAt: article.UpdatedAt,
+	}
+	return modelArticle, nil
 }
 
 // 发布文章
@@ -120,4 +146,73 @@ func (a *ArticleService) PublishArticle(article *model.ArticlePublish, userId ui
 		return 0, err
 	}
 	return articleId, nil
+}
+
+// channel并发组装文章的额外信息，比如标签，图片等
+func (a *ArticleService) assembleArticleExtraInfo(articles []repository.Article) (users map[uint64]repository.User, articleTags map[uint64][]repository.Tag, imageMap map[uint64][]repository.ArticleImage, err error) {
+	users = make(map[uint64]repository.User)
+	articleTags = make(map[uint64][]repository.Tag)
+	imageMap = make(map[uint64][]repository.ArticleImage)
+
+	var (
+		waitGroup sync.WaitGroup
+		mu        sync.Mutex
+		once      sync.Once
+	)
+
+	userIds := make([]uint64, len(articles))
+	for i, article := range articles {
+		userIds[i] = article.UserId
+	}
+
+	articleIds := make([]uint64, len(articles))
+	for i, article := range articles {
+		articleIds[i] = uint64(article.ID)
+	}
+	waitGroup.Add(3)
+
+	go func() {
+		defer waitGroup.Done()
+		result, e := a.userRepository.FindMapByIds(userIds)
+		if e != nil {
+			once.Do(func() {
+				err = e
+			})
+			return
+		}
+		mu.Lock()
+		users = result
+		mu.Unlock()
+	}()
+
+	go func() {
+		defer waitGroup.Done()
+		result, e := a.articleTagRepository.FindTagMapByArticleIds(articleIds)
+		if e != nil {
+			once.Do(func() {
+				err = e
+			})
+		}
+		mu.Lock()
+		articleTags = result
+		mu.Unlock()
+	}()
+
+	go func() {
+		defer waitGroup.Done()
+		result, e := a.articleImageRepo.FindMapByArticleIds(articleIds)
+		if e != nil {
+			once.Do(func() {
+				err = e
+			})
+			return
+		}
+		mu.Lock()
+		imageMap = result
+		mu.Unlock()
+	}()
+
+	waitGroup.Wait()
+
+	return users, articleTags, imageMap, nil
 }

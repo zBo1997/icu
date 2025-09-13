@@ -9,7 +9,7 @@ import (
 // ArticleImage 模型结构
 type ArticleImage struct {
 	gorm.Model
-	ArticleId uint64 `json:"articleId"`
+	ArticleID uint64 `json:"articleId"`
 	ImageKey  string `json:"imageKey"`
 	Caption   string `json:"caption"`
 	SortOrder int    `json:"sortOrder"`
@@ -48,7 +48,7 @@ func (r *ArticleImageRepository) FindMapByArticleIds(articleIds []uint64) (map[u
 
 	// 内存分组
 	for _, img := range images {
-		res[img.ArticleId] = append(res[img.ArticleId], img)
+		res[img.ArticleID] = append(res[img.ArticleID], img)
 	}
 	return res, nil
 }

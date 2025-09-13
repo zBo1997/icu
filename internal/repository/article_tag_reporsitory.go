@@ -20,6 +20,22 @@ func NewArticleTagRepository() *ArticleTagRepository {
 	return &ArticleTagRepository{db: config.GetDB()}
 }
 
+// 根据文章ID查询标签
+func (r *ArticleTagRepository) FindTagsByArticleId(articleId uint64) ([]Tag, error) {
+	var tags []Tag
+	err := r.db.
+		Model(&ArticleTag{}).
+		Select("tags.id, tags.tag").
+		Joins("JOIN tags ON tags.id = article_tags.tag_id").
+		Where("article_tags.article_id = ?", articleId).
+		Order("tags.id").
+		Scan(&tags).Error
+	if err != nil {
+		return nil, err
+	}
+	return tags, nil
+}
+
 func (r *ArticleTagRepository) FindTagMapByArticleIds(articleIds []uint64) (map[uint64][]Tag, error) {
 	res := make(map[uint64][]Tag, len(articleIds))
 	if len(articleIds) == 0 {
