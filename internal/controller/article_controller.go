@@ -29,7 +29,7 @@ func (a *ArticleController) PageArticle(c *gin.Context) {
 	page, _ := strconv.Atoi(c.DefaultQuery("page", "1"))
 	pageSize, _ := strconv.Atoi(c.DefaultQuery("pageSize", "10"))
 
-	ariticles, total, err := a.service.PageArticle(page, pageSize)
+	articlePage, total, err := a.service.PageArticle(page, pageSize)
 	if err != nil {
 		c.JSON(http.StatusInternalServerError, gin.H{
 			"error": "获取文章列表失败",
@@ -40,12 +40,12 @@ func (a *ArticleController) PageArticle(c *gin.Context) {
 	//count 转换为 int64
 	countInt64 := int64(count)
 	hasMore := countInt64 < total
-
-	c.JSON(http.StatusOK, gin.H{
-		"items":   ariticles,
-		"hasMore": hasMore,
+	// 返回 JSON
+	c.JSON(http.StatusOK, gin.H{"data": map[string]interface{}{
+		"items":   articlePage,
 		"total":   total,
-	})
+		"hasMore": hasMore,
+	}})
 }
 
 // GetArticleHandler 获取文章相关信息的处理函数
